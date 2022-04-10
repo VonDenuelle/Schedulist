@@ -3,6 +3,8 @@ A mobile application based on Ionic Framework w/ Capacitor
 
 Plugins used to work with Android
 
+**plugins are already present in the project, use npm install**
+
 --> Native Android Plugins
 
 - npm install @capacitor/local-notifications
