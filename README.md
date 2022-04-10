@@ -26,8 +26,8 @@ https://capacitorjs.com/docs/getting-started/environment-setup
 
 **Running with Real Android Device**
 *Enable USB Debugging on your phone First*
---1. npx cap open android - Type in vscode while your project is open, or in cmd under project root path
---2. npx cap run android - The command will prompt you to select a target
+1). npx cap open android - Type in vscode while your project is open, or in cmd under project root path
+2). npx cap run android - The command will prompt you to select a target
 
 
 
