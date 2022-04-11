@@ -1,4 +1,4 @@
-import { Component, OnInit ,ViewChild } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 @Component({
   selector: 'app-add-schedule',
   templateUrl: './add-schedule.page.html',

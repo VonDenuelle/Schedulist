@@ -2,3 +2,25 @@ ion-toolbar{
     --background:#05575F ;
     --color: #FCC07A ;
 }
+
+.text-center{
+    font-size: 18px;
+    text-align: center;
+    background:#fff;
+    border-radius: 50px;
+    border:#05575F 1px solid;
+    padding:5px;
+
+
+}
+.text-center:hover{
+    font-size: 18px;
+    text-align: center;
+    background:#05575F;
+    color:#fff;
+    border-radius: 50px;
+    border:#05575F 1px solid;
+    padding:5px;
+
+
+}
