@@ -9,5 +9,64 @@
 
 
 <ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="time">
+        8
+      </ion-col>
+      <ion-col class="time">
+        51
+      </ion-col>
+      <ion-col class="time">
+        AM
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-content class="weather">
+            <h1>Olongapo City</h1>
+            <img src="/assets/thunderstorm.png">
+            <h3>24°C</h3>
+            <h3>Thunderstorm</h3>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-card class="schedule">
+          <ion-card-header>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <img class="task" src="/assets/task.png">
+                </ion-col>
+                <ion-col>
+                  <ion-card-title style="text-align:right;color:#fff">9:00 AM</ion-card-title>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-header>
+          
+          <ion-card-content>
+            <h2 class="title">Watch Anime</h2>
+            <h4 class="description">Will Watch bla bla bla bla</h4>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button href="/add-schedule">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
 </ion-content>

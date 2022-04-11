@@ -11,6 +11,5 @@ export class AppComponent {
     { title: 'About', url: '/about', icon: 'information-circle' },
     { title: 'Log out', url: '/logout', icon: 'log-out' }
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   constructor() {}
 }

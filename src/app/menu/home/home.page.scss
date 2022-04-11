@@ -1,0 +1,44 @@
+ion-toolbar{
+    --background:#05575F ;
+    --color: #FCC07A ;
+}
+.time{
+    background: #05575F ;
+    font-size: 40px;
+    color:#fff;
+    margin:5px;
+    padding:20px;
+    text-align: center;
+
+}
+.weather{
+    text-align: center;
+}
+.schedule{
+    background: #05575F ;
+    border-radius: 10px;
+    padding:20px;
+}
+
+.title{
+    color:#fff;
+    text-align:center;
+    font-size: 30px;
+}
+hr{
+    color: #fff;
+    height:5px;
+    width:90%;
+}
+.description{
+    color:#fff;
+    text-align:center;
+    font-size: 20px;
+}
+ion-fab-button{
+    --background:#05575F;
+}
+.task{
+    height:30px;
+    width:30px;
+}
