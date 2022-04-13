@@ -1,29 +1,18 @@
 <ion-header>
-  <ion-toolbar>
+  <!-- <ion-toolbar>
     <ion-title>Schedulist</ion-title>
-  </ion-toolbar>
+  </ion-toolbar> -->
 </ion-header>
 
 <ion-content>
-  <ion-text>
-    <h3 class="ion-text-center">Welcome!</h3><br>
+  <ion-text class="landing">
+    <h3>Welcome!</h3><br>
 
-    <p>Manage your tasks and schedules</p>
-    <p>Seamlessly & Intuitively</p>
-    <br><br><br>
-
+    <h4>Manage your tasks and schedules</h4>
+    <h5>Seamlessly & Intuitively</h5>
+    <br>
   </ion-text>
 
-  <!-- <ion-card>
-    <ion-card-header>
-      <ion-card-title>Welcome!</ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
-      content
-    </ion-card-content>
-  </ion-card> -->
-
-  <ion-button size="block" [routerLink]="['/login']">Login with Email</ion-button>
-  <ion-button size="block" [routerLink]="['/register']">Create an account</ion-button>
+  <ion-button class="loginBttn" size="block" [routerLink]="['/login']">Login with Email</ion-button>
+  <ion-button class="registerBttn" size="block" [routerLink]="['/register']">Create an account</ion-button>
 </ion-content>

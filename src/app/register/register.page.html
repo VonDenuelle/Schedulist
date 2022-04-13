@@ -1,25 +1,36 @@
-<ion-header>
+<ion-header   class="ion-no-border">
   <ion-toolbar>
-    <ion-title>Register</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="landing"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Create an account</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-item>
-    <ion-label>Email: </ion-label>
-    <ion-input></ion-input>
-  </ion-item>
+  <ion-card class="form">
+    <h3>Welcome!</h3>
+    <p>Hello there! Create an account to continue</p>
 
-  <ion-item>
-    <ion-label>Password: </ion-label>
-    <ion-input></ion-input>
-  </ion-item>
+    <ion-label position="stacked">Name: </ion-label>
+    <ion-input placeholder="Enter your name"></ion-input>
+    <br>
 
-  <ion-item>
-    <ion-label>Confirm Password: </ion-label>
-    <ion-input></ion-input>
-  </ion-item>
-  <ion-button size="block" [routerLink]="['/login']">Sign up</ion-button>
+    <ion-label position="stacked">Email: </ion-label>
+    <ion-input placeholder="Enter your email address"></ion-input>
+    <br>
 
+    <ion-label position="stacked">Password: </ion-label>
+    <ion-input placeholder="Enter your password"></ion-input>
+    <br>
 
+    <ion-label position="stacked">Confirm Password: </ion-label>
+    <ion-input placeholder="Retype your password"></ion-input>
+    <br>
+
+    <ion-button size="block" [routerLink]="['/login']">Sign up</ion-button>
+
+    <p class="ion-text-center">Already have an account? <a [routerLink]="['/login']">Sign In</a></p>
+  </ion-card>
 </ion-content>

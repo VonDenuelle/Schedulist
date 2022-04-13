@@ -1,19 +1,28 @@
-<ion-header>
+<ion-header  class="ion-no-border">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="landing"></ion-back-button>
+    </ion-buttons>
+
     <ion-title>Login</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-item>
+  <ion-card class="form">
+    <h3>Welcome back!</h3>
+    <p>Hello there! Sign In to continue</p>
+
     <ion-label>Email: </ion-label>
-    <ion-input></ion-input>
-  </ion-item>
+    <ion-input placeholder="Enter your email address"></ion-input>
+    <br>
 
-  <ion-item>
     <ion-label>Password: </ion-label>
-    <ion-input></ion-input>
-  </ion-item>
-  <ion-button size="block" [routerLink]="['/landing']">Login</ion-button>
+    <ion-input placeholder="Enter your password"></ion-input>
+    <br>
 
+    <ion-button size="block" [routerLink]="['/landing']">Login</ion-button>
+
+    <p class="ion-text-center">Don't have an account? <a [routerLink]="['/register']">Create one!</a></p>
+  </ion-card>
 </ion-content>
