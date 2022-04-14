@@ -14,16 +14,28 @@ const routes: Routes = [
   {
     path: 'schedules',
     loadChildren: () => import('./menu/schedules/schedules.module').then( m => m.SchedulesPageModule)
-  },
-  {
-    path: 'about-page',
-    loadChildren: () => import('./about-page/about-page.module').then( m => m.AboutPagePageModule)
+
   },
   {
     path: 'add-schedule',
     loadChildren: () => import('./menu/add-schedule/add-schedule.module').then( m => m.AddSchedulePageModule)
+  },
+  {
+    path: 'landing',
+    loadChildren: () => import('./landing/landing.module').then( m => m.LandingPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+  },
+   {
+    path: 'about-page',
+    loadChildren: () => import('./about-page/about-page.module').then( m => m.AboutPagePageModule)
   }
-
 
 
 ];

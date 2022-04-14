@@ -31,12 +31,17 @@ npm install @capacitor/android
 _____________________________________________
 
 
---! Error: To sync android if error occurs upon running on android device or emulator
+--! ERROR: To sync android if error occurs in plugins upon running on android device or emulator
 
 - ionic capacitor sync android
 
 _____________________________________________
 
+--^^ UPDATE: To sync android if changes in ionic components is mande like creating new pages
+
+- ionic capacitor copy android
+
+_____________________________________________
 
 # HOW TO RUN
 
