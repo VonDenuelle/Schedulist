@@ -7,6 +7,7 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  // Side Menu Navigation Paths
   {
     path: 'home',
     loadChildren: () => import('./menu/home/home.module').then( m => m.HomePageModule)
@@ -14,11 +15,17 @@ const routes: Routes = [
   {
     path: 'schedules',
     loadChildren: () => import('./menu/schedules/schedules.module').then( m => m.SchedulesPageModule)
-  },  {
+  },
+
+//  other pages paths
+  {
     path: 'add-schedule',
     loadChildren: () => import('./menu/add-schedule/add-schedule.module').then( m => m.AddSchedulePageModule)
+  },
+  {
+    path: 'schedules/all-schedules',
+    loadChildren: () => import('./schedule-pages/all-schedules/all-schedules.module').then( m => m.AllSchedulesPageModule)
   }
-
 
 ];
 
