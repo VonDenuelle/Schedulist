@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
@@ -35,8 +36,13 @@ const routes: Routes = [
    {
     path: 'about-page',
     loadChildren: () => import('./about-page/about-page.module').then( m => m.AboutPagePageModule)
+  },
+  
+//  other pages paths
+  {
+    path: 'schedules/all-schedules',
+    loadChildren: () => import('./schedule-pages/all-schedules/all-schedules.module').then( m => m.AllSchedulesPageModule)
   }
-
 
 ];
 
@@ -47,3 +53,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
+

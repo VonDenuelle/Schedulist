@@ -1,13 +1,43 @@
+
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <!-- BURGER -->
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <!-- More -->
+    <ion-buttons slot="primary">
+      <ion-button id="trigger-popover">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
+
+      <ion-popover trigger="trigger-popover">
+        <ng-template>
+          <ion-content>
+            <ion-list>
+              <ion-item [routerLink]="['/schedules/all-schedules']" (click)="DismissClick()">All Schedules</ion-item>
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
+
     </ion-buttons>
     <ion-title>Schedules</ion-title>
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
 
+  <div class="label-to-center">
+    <ion-card>
+      <ion-card-content>
+        <ion-label>Schedules for Today</ion-label>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <app-schedules-list title="Sample Title" time="8:30 AM"></app-schedules-list>
+  <app-schedules-list title="Sample Title 2" time="9:30 M"></app-schedules-list>
+  <app-schedules-list title="Sample Title 3" time="1:30 PM"></app-schedules-list>
+
 </ion-content>
+

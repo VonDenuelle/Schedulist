@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="schedules"></ion-back-button>
+    </ion-buttons>
+    <ion-title>All Schedules</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Custom Icon -->
+  <ion-accordion-group>
+
+
+    <ion-accordion *ngFor="let item of days" value={{item}} toggle-icon="chevron-down" >
+      <ion-item slot="header">
+        <ion-label>{{item}}</ion-label>
+      </ion-item>
+      <ion-list slot="content">
+          <app-schedules-list *ngFor="let list of lists" title={{list.title}} time={{list.time}}></app-schedules-list>
+      </ion-list>
+    </ion-accordion>
+
+
+
+  </ion-accordion-group>
+
+</ion-content>

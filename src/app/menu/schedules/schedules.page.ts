@@ -1,4 +1,6 @@
+import { Time } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'app-schedules',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SchedulesPage implements OnInit {
 
-  constructor() { }
+  constructor(private popoverController: PopoverController) { }
 
   ngOnInit() {
   }
+
+  
+  // Dismiss Popover
+  async DismissClick() {
+    await this.popoverController.dismiss();
+      }
 
 }
