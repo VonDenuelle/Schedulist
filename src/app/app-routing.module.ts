@@ -5,9 +5,13 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'landing',
     pathMatch: 'full'
   },
+
+  /**
+   * Paths inside Side Menu Navigation
+   */
   {
     path: 'home',
     loadChildren: () => import('./menu/home/home.module').then( m => m.HomePageModule)
@@ -18,27 +22,32 @@ const routes: Routes = [
 
   },
   {
-    path: 'add-schedule',
-    loadChildren: () => import('./menu/add-schedule/add-schedule.module').then( m => m.AddSchedulePageModule)
+    path: 'about-page',
+    loadChildren: () => import('./menu/about-page/about-page.module').then( m => m.AboutPagePageModule)
   },
+  
+  /**
+   * Paths of landing pages
+   */
   {
     path: 'landing',
-    loadChildren: () => import('./landing/landing.module').then( m => m.LandingPageModule)
+    loadChildren: () => import('./user-landing-pages/landing/landing.module').then( m => m.LandingPageModule)
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./user-landing-pages/login/login.module').then( m => m.LoginPageModule)
   },
   {
     path: 'register',
-    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+    loadChildren: () => import('./user-landing-pages/register/register.module').then( m => m.RegisterPageModule)
   },
-   {
-    path: 'about-page',
-    loadChildren: () => import('./about-page/about-page.module').then( m => m.AboutPagePageModule)
-  },
+   
   
 //  other pages paths
+  {
+    path: 'schedules/add-schedule',
+    loadChildren: () => import('./schedule-pages/add-schedule/add-schedule.module').then( m => m.AddSchedulePageModule)
+  },
   {
     path: 'schedules/all-schedules',
     loadChildren: () => import('./schedule-pages/all-schedules/all-schedules.module').then( m => m.AllSchedulesPageModule)

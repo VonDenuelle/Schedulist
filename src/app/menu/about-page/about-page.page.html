@@ -1,0 +1,107 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>About</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true">
+  <ion-segment mode="md" [(ngModel)]="selected">
+    <ion-segment-button mode="md" value="abtSched">
+      <ion-label>ABOUT SCHEDULIST</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button mode="md" value="whoWR">
+      <ion-label>WHO WE ARE</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="selected == 'abtSched'">
+    <ion-grid>
+      <h1>What is 
+        <span style="color: #05575F;">Schedu</span>
+        <span style="color: #FD8B3F;">list</span> about?</h1>
+      <img src="../../../assets/logo.png"> 
+      <!-- 1st cards row -->
+      <ion-row>
+        <ion-col>
+          <ion-card>
+            <img class="icons" src="../../assets/icon/add.png">
+            <ion-card-header>
+              <ion-card-title>Create</ion-card-title>
+              <ion-card-subtitle>Enlisting of schedules</ion-card-subtitle>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+        <ion-col>
+          <ion-card>
+            <img class="icons" src="../../assets/icon/calendar.png">
+            <ion-card-header>
+              <ion-card-title>Set</ion-card-title>
+              <ion-card-subtitle>Select the day and time of your schedule</ion-card-subtitle>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <!-- 2nd cards row -->
+      <ion-row>
+        <ion-col>
+          <ion-card>
+            <img class="icons" src="../../assets/icon/edit.png">
+            <ion-card-header>
+              <ion-card-title>Manage</ion-card-title>
+              <ion-card-subtitle>Enables editing and deleting of schedules</ion-card-subtitle>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+        <ion-col>
+          <ion-card>
+            <img class="icons" src="../../assets/icon/bell.png">
+            <ion-card-header>
+              <ion-card-title>Notify</ion-card-title>
+              <ion-card-subtitle>Notifies you with the assigned day and time</ion-card-subtitle>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div *ngIf="selected == 'whoWR'">
+    <h1 class="second">The Team</h1>
+    <h3 class="second">Thaien Devs</h3>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <img src="../../assets/von.png">
+          <p>Von Tandoc</p>
+          <h5>Lead Developer</h5>
+        </ion-col>
+        <ion-col>
+          <img src="../../assets/tin.png">
+          <p>Justin Reyes</p>
+          <h5>UI/UX Designer</h5>
+        </ion-col>
+      </ion-row><br>
+
+      <ion-row>
+        <ion-col>
+          <img src="../../assets/poch.png">
+          <p>Denverson Caacbay</p>
+          <h5>Front-end Developer</h5>
+        </ion-col>
+        <ion-col>
+          <img src="../../assets/poch.png">
+          <p>Pocholo Gopez</p>
+          <h5>Back-end Developer</h5>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </div>
+</ion-content>
