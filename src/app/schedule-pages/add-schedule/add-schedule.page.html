@@ -8,6 +8,20 @@
 </ion-header>
 
 <ion-content>
-  <ion-datetime presentation="time"></ion-datetime>
-      
+<!-- Datetime in popover with cover element -->
+<ion-item button="true" id="open-date-input">
+  <ion-label>Time</ion-label>
+  <ion-text slot="end">{{ dateValue2 }}</ion-text>
+  <ion-popover trigger="open-date-input" show-backdrop="false">
+    <ng-template>
+      <ion-datetime
+        hour-cycle="h12" locale="zh-HK"
+        #popoverTime 
+        presentation="time"
+        (ionChange)="dateValue2 = formatDate(popoverTime.value)"
+      ></ion-datetime>
+    </ng-template>
+  </ion-popover>
+</ion-item>
+
 </ion-content>

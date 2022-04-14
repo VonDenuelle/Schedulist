@@ -26,11 +26,14 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 
+// Global Toolbar
 ion-toolbar{
     --background:#05575F ;
     --color: #FCC07A ;
-
 }
-// i made changes using  GC account on denuden branch
-// First one failed
-//  SECOND TRY
+
+// Landing Pages Background Color
+.landing{
+    --background: #05575f;
+  }
+  

@@ -1,6 +1,6 @@
 import { Time } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
+import { MenuController, PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'app-schedules',
@@ -9,11 +9,14 @@ import { PopoverController } from '@ionic/angular';
 })
 export class SchedulesPage implements OnInit {
 
-  constructor(private popoverController: PopoverController) { }
+  constructor(private popoverController: PopoverController, public menuCtrl: MenuController) { }
 
   ngOnInit() {
   }
 
+  ionViewWillEnter() {
+    this.menuCtrl.enable(true);  //enable sidemenu
+   }
   
   // Dismiss Popover
   async DismissClick() {

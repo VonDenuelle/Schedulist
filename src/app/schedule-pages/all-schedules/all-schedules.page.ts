@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-all-schedules',
@@ -13,9 +14,12 @@ export class AllSchedulesPage implements OnInit {
     {title : "Hi", time: "10:30 PM"}
   ]
 
-  constructor() { }
-
+  constructor(public menuCtrl: MenuController) { }
+  
   ngOnInit() {
   }
 
+  ionViewWillEnter() {
+    this.menuCtrl.enable(true);  //enable sidemenu
+   }
 }

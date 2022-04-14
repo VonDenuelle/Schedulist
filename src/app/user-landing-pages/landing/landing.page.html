@@ -1,19 +1,17 @@
-<ion-header>
-  <!-- <ion-toolbar>
-    <ion-title>Schedulist</ion-title>
-  </ion-toolbar> -->
-</ion-header>
-
 <ion-content class="landing">
-  <ion-text>
-    <img class="logo" src="../../assets/pic.png">
+  <div class="container-padding-10">
+    <ion-text>
+      <img class="logo" src="../../assets/pic.png">
 
-    <h3>Welcome!</h3><br>
-    <h4>Manage your tasks and schedules</h4>
-    <h5>Seamlessly & Intuitively</h5>
-    <br>
-  </ion-text>
+      <h3>Welcome!</h3>
+      <h4>Manage your tasks and schedules</h4>
+      <h5>Seamlessly & Intuitively</h5>
+      <br>
+    </ion-text>
 
-  <ion-button class="loginBttn" size="block" [routerLink]="['/login']">Login with Email</ion-button>
-  <ion-button class="registerBttn" size="block" [routerLink]="['/register']">Create an account</ion-button>
+    <div class="button-container">
+      <ion-button class="loginBttn" size="block" [routerLink]="['/login']">Login with Email</ion-button>
+      <ion-button class="registerBttn" size="block" [routerLink]="['/register']">Create an account</ion-button>
+    </div>
+  </div>
 </ion-content>
