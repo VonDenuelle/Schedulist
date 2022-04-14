@@ -8,20 +8,95 @@
 </ion-header>
 
 <ion-content>
-<!-- Datetime in popover with cover element -->
-<ion-item button="true" id="open-date-input">
-  <ion-label>Time</ion-label>
-  <ion-text slot="end">{{ dateValue2 }}</ion-text>
-  <ion-popover trigger="open-date-input" show-backdrop="false">
-    <ng-template>
-      <ion-datetime
-        hour-cycle="h12" locale="zh-HK"
-        #popoverTime 
-        presentation="time"
-        (ionChange)="dateValue2 = formatDate(popoverTime.value)"
-      ></ion-datetime>
-    </ng-template>
-  </ion-popover>
-</ion-item>
-
-</ion-content>
+    <ion-item button="true" id="open-date-input">
+      <ion-label>Time</ion-label>
+      <ion-text slot="end">{{ dateValue2 }}</ion-text>
+      <ion-popover trigger="open-date-input" show-backdrop="false">
+        <ng-template>
+          <ion-datetime
+            hour-cycle="h12" locale="zh-HK"
+            #popoverTime 
+            presentation="time"
+            (ionChange)="dateValue2 = formatDate(popoverTime.value)"
+          ></ion-datetime>
+        </ng-template>
+      </ion-popover>
+    </ion-item>
+    <br>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-button class="datebutton">Mon</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button class="datebutton">Tue</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button class="datebutton">Wed</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button class="datebutton">Thu</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button class="datebutton">Fri</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button class="datebutton">Sat</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button class="datebutton">Sun</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  
+  
+  
+    <br>
+    <ion-card class="title">
+      <ion-item>
+        <ion-label position="floating">Title</ion-label>
+        <ion-input></ion-input>
+      </ion-item>  
+    </ion-card>
+  
+    <ion-card class="desc">
+      <ion-item>
+        <ion-label position="floating">Description</ion-label>
+        <ion-textarea></ion-textarea>
+      </ion-item>
+    </ion-card>
+    <br>
+    <ion-card>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-checkbox></ion-checkbox>
+          </ion-col>
+          <ion-col size="9" style="color:#fff">
+            Vibrate
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+  </ion-content>
+  
+  <ion-footer class="ion-no-border" >
+    <ion-toolbar class="footer">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-button class="option">
+              <ion-icon slot="end" name="star"></ion-icon>
+              Delete
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button class="option1">
+              <ion-icon slot="end" name="star"></ion-icon>
+              Save
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+  </ion-toolbar>
+  </ion-footer>

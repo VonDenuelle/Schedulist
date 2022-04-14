@@ -1,0 +1,59 @@
+ion-toolbar{
+    --background:#05575F ;
+    --color: #FCC07A ;
+}
+
+.text-center{
+    font-size: 18px;
+    text-align: center;
+    background:#fff;
+    border-radius: 50px;
+    border:#05575F 1px solid;
+    padding:5px;
+
+
+}
+.text-center:hover{
+    font-size: 18px;
+    text-align: center;
+    background:#05575F;
+    color:#fff;
+    border-radius: 50px;
+    border:#05575F 1px solid;
+    padding:5px;
+}
+.datebutton{
+    width:35px;
+    font-size: 12px;
+    --background:#05575F;
+    --border:#FCC07A 1px solid;
+    --border-radius: 20px;
+    color:#FCC07A;
+}
+
+.title{
+    padding:10px;
+}
+.desc{
+    padding:10px;
+}
+
+.option{
+    width: 150px;
+    --padding: 10px;
+    font-size: 12px;
+    --background:#FFF;
+    --color:#F44235;
+}
+
+.option1{
+    width: 150px;
+    --padding: 10px;
+    font-size: 12px;
+    --background:#FFF;
+    --color:#FCC07A;
+}
+
+.footer{
+    --background:#fff ;
+}
