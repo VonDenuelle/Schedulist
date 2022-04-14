@@ -14,7 +14,9 @@ const routes: Routes = [
   {
     path: 'schedules',
     loadChildren: () => import('./menu/schedules/schedules.module').then( m => m.SchedulesPageModule)
-  },  {
+
+  },
+  {
     path: 'add-schedule',
     loadChildren: () => import('./menu/add-schedule/add-schedule.module').then( m => m.AddSchedulePageModule)
   },
@@ -29,6 +31,10 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+  },
+   {
+    path: 'about-page',
+    loadChildren: () => import('./about-page/about-page.module').then( m => m.AboutPagePageModule)
   }
 
 
