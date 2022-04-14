@@ -43,7 +43,7 @@
   --border-radius: 25px;
 }
 
-.form ion-input, ion-item{
+.form ion-input{
   --background: #f5f5f5;
   color: black;
   border-radius: 3vw;
@@ -63,6 +63,11 @@
   color: #a9c5c8;
 }
 
+.landing ion-toolbar{
+  --background: #05575f;
+  --border-style: none;
+}
+
 .logo{
   height: 50%;
   display: block;
@@ -70,15 +75,9 @@
   margin-right: auto;
 }
 
-ion-toolbar{
-  --background: #05575f;
-  --border-style: none;
-}
-
 ion-content{
   --background: #05575f;
 }
-
 
 /** Ionic CSS Variables **/
 :root {
