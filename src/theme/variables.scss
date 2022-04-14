@@ -1,6 +1,84 @@
 // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
 
+//custom
+.loginBttn{
+  --background: #fcc07a;
+  --border-radius: 5vw;
+  --border-style: solid;
+  --border-color: white;
+  --border-width: .3vw;
+  font-weight: bold;
+}
+
+.registerBttn{
+  --background: #05575f;
+  --border-radius: 5vw;
+  --border-style: solid;
+  --border-color: white;
+  --border-width: .3vw;
+  color: #fcc07a;
+  font-weight: bold;
+}
+
+//form stuff
+.form{
+  --background: white;
+  padding: 3vw;
+  border-radius: 5vw;
+}
+
+.form h3,p,ion-label{
+  color: black;
+  text-align: center;
+}
+
+.form a{
+  text-decoration: none;
+  color: #fcc07a;
+}
+
+.form ion-button{
+  --background: #fcc07a;
+  --border-radius: 25px;
+}
+
+.form ion-input{
+  --background: #f5f5f5;
+  color: black;
+  border-radius: 3vw;
+}
+
+.form ion-label{
+  text-align: start;
+}
+
+//landing stuff
+.landing h3,h4,h5{
+  text-align: center;
+  color: white;
+}
+
+.landing h4{
+  color: #a9c5c8;
+}
+
+.landing ion-toolbar{
+  --background: #05575f;
+  --border-style: none;
+}
+
+.logo{
+  height: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ion-content{
+  --background: #05575f;
+}
+
 /** Ionic CSS Variables **/
 :root {
   /** primary **/
