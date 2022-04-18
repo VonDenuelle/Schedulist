@@ -41,13 +41,9 @@
     font-size: 20px;
 }
 
-  .landing ion-toolbar{
-    --background: #05575f;
-    --border-style: none;
-  }
   
   .logo{
-    height: 50%;
+    height: 40%;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -63,6 +59,7 @@
     }
 
     .button-container{
+      
         margin-bottom: 30px;
     }
   }

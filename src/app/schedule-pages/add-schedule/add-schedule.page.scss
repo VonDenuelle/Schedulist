@@ -3,57 +3,116 @@ ion-toolbar{
     --color: #FCC07A ;
 }
 
-.text-center{
-    font-size: 18px;
-    text-align: center;
-    background:#fff;
-    border-radius: 50px;
-    border:#05575F 1px solid;
-    padding:5px;
-
-
-}
-.text-center:hover{
-    font-size: 18px;
-    text-align: center;
-    background:#05575F;
-    color:#fff;
-    border-radius: 50px;
-    border:#05575F 1px solid;
-    padding:5px;
-}
+// Choose Days
 .datebutton{
-    width:35px;
-    font-size: 12px;
+    font-size: 13px;
+    --background:#fff;
+    --border:#333 1px solid;
+    --border-radius: 50%;
+    color:#05575F;
+    width: 42px;
+    height: 42px;
+}
+.datebuttonActive{
     --background:#05575F;
-    --border:#FCC07A 1px solid;
-    --border-radius: 20px;
-    color:#FCC07A;
+    color:#fff;
+}
+ion-col{
+    flex-grow: 0;
 }
 
-.title{
-    padding:10px;
-}
-.desc{
-    padding:10px;
+
+// Choose Time
+.time-input{
+    width: 100%;
+    --background: #fafafa;
+    
+    ion-label{
+        font-size: 36px;
+    }
+
 }
 
-.option{
-    width: 150px;
-    --padding: 10px;
-    font-size: 12px;
-    --background:#FFF;
-    --color:#F44235;
+.time-input-wrapper{
+    margin: 20px;
+    width: 90%;
+    --background: #fafafa;
+    --border-radius: 15px;
+
+    ion-toggle {
+        --background-checked:#8eb6ba;
+        --handle-background-checked: #05575F;
+      }
 }
 
-.option1{
-    width: 150px;
-    --padding: 10px;
-    font-size: 12px;
-    --background:#FFF;
-    --color:#FCC07A;
+// Input Fields
+ion-card.inputs{
+    box-shadow: none;
+    border-top: 1px;
+    border-right: 1px;
+    border-left: 1px;
+    border-bottom: 0px;
+    border-color: #7070703e;
+    border-style: solid;
+   
+   
+    ion-item{
+        ion-label{
+            --color:#FCC07A;
+            --color-focused : #FCC07A;
+        }
+        .label-floating{
+            color: #FCC07A;
+        }
+        --highlight-color-focused: #FCC07A;
+    }
 }
 
-.footer{
-    --background:#fff ;
+// Vibrate Item
+
+ion-item.vibrate{
+    ion-checkbox{
+        --border-color-checked: #05575F;
+        --background-checked: #05575F;
+    }
+    ion-label{
+        padding: 10px 0;
+        font-size: 24px;
+        border-left:0;
+        border-right: 0;
+        border-top: 1px;
+        border-bottom: 1px;
+        border-color: #7070703d;
+        border-style: solid;
+    }
 }
+
+// Buttons Delete & Save
+.buttons-flex{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 16px;
+
+    ion-button{
+        flex-grow: 1;
+        margin: 12px;   
+        --background: #fafafa;
+    }
+    ion-button:active{
+        --background: #f1f1f1;
+    }
+    .delete{
+        ion-icon, ion-label{
+            color : #742020;
+        }
+    }
+
+    .save{
+        ion-icon, ion-label{
+            color : #FCC07A;
+        }
+    }
+}
+
