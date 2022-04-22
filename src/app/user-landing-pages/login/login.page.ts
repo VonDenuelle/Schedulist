@@ -43,7 +43,8 @@ export class LoginPage implements OnInit {
         this.router.navigateByUrl('/home', {replaceUrl:true})
       },
       async (res) => {
-      
+        console.log(res);
+        
         await loading.dismiss()
         const alert = await alertController.create({
           header: 'Signin Failed',

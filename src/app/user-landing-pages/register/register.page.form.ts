@@ -1,4 +1,4 @@
-import { FormBuilder, FormGroup, ValidatorFn, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, RequiredValidator, ValidatorFn, Validators } from "@angular/forms";
 
 export class RegisterPageForm {
 
@@ -15,10 +15,11 @@ export class RegisterPageForm {
             name: ['', [Validators.required]] ,
             password: ['', [Validators.required, Validators.minLength(6)]],         
             email: ['', [Validators.required, Validators.email]],       
-            password_confirmation: [''],       
+            password_confirmation: ['', [Validators.required]],       
         });
-
-        form.get('password_confirmation').setValidators(passwordConfirmation(form))
+        
+        form.get('password_confirmation').addValidators(passwordConfirmation(form))
+ 
    return form
     }
 
