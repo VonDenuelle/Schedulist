@@ -7,28 +7,47 @@
 </ion-header>
 
 <ion-content class="landing">
-    <h3 class="signin-label">Sign in</h3>
+  <h3 class="signin-label">Sign in</h3>
 
-    <ion-card>
-      <h4>Welcome Back!</h4>
-      <p>Hello there! Sign In to continue</p>
-      
-      <form>
-      
-          <ion-label>Email </ion-label>
-          <ion-input placeholder="Enter your email address"></ion-input>
-          <br>
+  <ion-card>
+    <h4>Welcome Back!</h4>
+    <p>Hello there! Sign In to continue</p>
 
-          <ion-label>Password </ion-label>
-          <ion-input type="password" placeholder="Enter your password"></ion-input>
-          <br>
+    <form [formGroup]="form">
 
-    
-    
-          <ion-button size="block" [routerLink]="['/home']">Sign In</ion-button>
-          <p class="ion-text-center">Don't have an account? <a [routerLink]="['/register']">Create one!</a></p>
+      <div class="input-container">
+        <ion-label>Email </ion-label>
+        <ion-item>
+          <ion-input formControlName="email" type="email" placeholder="Enter your email address" clearInput="true">
+          </ion-input>
+        </ion-item>
 
-      </form>
-    </ion-card>
+        <app-error-message [field]="$any(form.get('email'))" error="required" message="Email is empty">
+        </app-error-message>
+        <app-error-message [field]="$any(form.get('email'))" error="email" message="Email is invalid">
+        </app-error-message>
+      </div>
+
+      <div class="input-container">
+        <ion-label>Password </ion-label>
+        <ion-item>
+          <ion-input clearInput="true" formControlName="password" type="password" placeholder="Enter your password">
+          </ion-input>
+        </ion-item>
+
+        <app-error-message [field]="$any(form.get('password'))" error="required" message="Password is empty">
+        </app-error-message>
+
+      </div>
+
+
+
+
+
+      <ion-button type="submit" [disabled]="!form.valid" size="block" (click)="signin()">Sign In</ion-button>
+      <p class="ion-text-center">Don't have an account? <a [routerLink]="['/register']">Create one!</a></p>
+
+    </form>
+  </ion-card>
 
 </ion-content>
