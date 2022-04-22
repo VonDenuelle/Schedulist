@@ -42,18 +42,26 @@ form {
     --background: #fcc07a;
     --border-radius: 25px;
   }
+  // [ngClass]="{'input-error-border' : form.get('email').errors?.required == true}"
 
-  ion-input {
-    --background: #f5f5f5;
-    color: black;
-    border-radius: 3vw;
+  .input-container{
+    margin: 18px 0 ;
+
+    ion-item {
+      --background: #f5f5f5;
+      border-radius: 10px;
+      margin-bottom: 6px;
+    }
+
+  
+    ion-label {
+      text-align: start;
+      color: rgba(0, 0, 0, 0.7);
+    }
   }
-
-  ion-label {
-    text-align: start;
-  }
-
 }
+
+
 
 
 @media only screen and (max-height: 600px) {

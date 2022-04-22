@@ -13,24 +13,55 @@
     <h4>Welcome!</h4>
     <p>Hello there! Create an account to continue</p>
 
-    <form>
-      <ion-label position="stacked">Name: </ion-label>
-      <ion-input placeholder="Enter your name"></ion-input>
-      <br>
+    <form [formGroup]="form">
+      <div class="input-container">
+        <ion-label>Name </ion-label>
+        <ion-item>
+          <ion-input formControlName="name" type="text" placeholder="Enter your name" clearInput="true">
+          </ion-input>
+        </ion-item>
 
-      <ion-label position="stacked">Email: </ion-label>
-      <ion-input placeholder="Enter your email address"></ion-input>
-      <br>
+        <app-error-message [field]="$any(form.get('name'))" error="required" message="Name is empty">
+        </app-error-message>
 
-      <ion-label position="stacked">Password: </ion-label>
-      <ion-input type="password" placeholder="Enter your password"></ion-input>
-      <br>
+      </div>
 
-      <ion-label position="stacked">Confirm Password: </ion-label>
-      <ion-input type="password" placeholder="Retype your password"></ion-input>
-      <br>
+      <div class="input-container">
+        <ion-label>Email </ion-label>
+        <ion-item>
+          <ion-input formControlName="email" type="email" placeholder="Enter your email address" clearInput="true">
+          </ion-input>
+        </ion-item>
 
-      <ion-button size="block" [routerLink]="['/login']">Sign up</ion-button>
+        <app-error-message [field]="$any(form.get('email'))" error="required" message="Email is empty">
+        </app-error-message>
+        <app-error-message [field]="$any(form.get('email'))" error="email" message="Email is invalid">
+        </app-error-message>
+      </div>
+
+      <div class="input-container">
+        <ion-label>Password </ion-label>
+        <ion-item>
+          <ion-input clearInput="true" formControlName="password" type="password" placeholder="Enter your password">
+          </ion-input>
+        </ion-item>
+
+        <app-error-message [field]="$any(form.get('password'))" error="required" message="Password is empty"> </app-error-message>
+        <app-error-message [field]="$any(form.get('password'))" error="minlength" message="Password is too short"> </app-error-message>
+      </div>
+
+      <div class="input-container">
+        <ion-label>Password </ion-label>
+        <ion-item>
+          <ion-input clearInput="true" formControlName="password_confirmation" type="password" placeholder="Retype your password">
+          </ion-input>
+        </ion-item>
+
+        <app-error-message [field]="$any(form.get('password_confirmation'))" error="isntMatching" message="Password do not match"> </app-error-message>
+      </div>
+
+
+      <ion-button type="submit" [disabled]="!form.valid" size="block" (click)="signup()">Sign up</ion-button>
 
       <p class="ion-text-center">Already have an account? <a [routerLink]="['/login']">Sign In</a></p>
 

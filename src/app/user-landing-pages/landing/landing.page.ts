@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Storage } from '@capacitor/storage';
 import { MenuController } from '@ionic/angular';
 
 @Component({
@@ -8,7 +10,7 @@ import { MenuController } from '@ionic/angular';
 })
 export class LandingPage implements OnInit {
 
-  constructor(public menuCtrl: MenuController) { }
+  constructor(public menuCtrl: MenuController, private router: Router) { }
 
   ngOnInit() {
   }
@@ -16,4 +18,6 @@ export class LandingPage implements OnInit {
   ionViewWillEnter() {
     this.menuCtrl.enable(false);  //disable sidemenu
    }
+
+ 
 }

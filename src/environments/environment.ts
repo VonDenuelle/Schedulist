@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  lan : 'http://192.168.1.4:8080/apischedulist/v1/post/login.php',
+  localhost : 'http://localhost/apischedulist/v1/post/login.php'
 };
 
 /*
