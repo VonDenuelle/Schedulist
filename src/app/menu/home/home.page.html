@@ -9,11 +9,34 @@
 
 
 <ion-content>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-card class="weathercard">
+          <ion-card-content class="weather">
+            <h1 class="wtitle">Olongapo City</h1>
+            <ion-col>
+              <img class="weathericon" src="/assets/thunderstorm.png">
+            </ion-col>
+            <ion-col>
+              <h2 class="weathertemp">24°C</h2>
+              <h3 class="weatherlabels">Thunderstorm</h3>
+            </ion-col>
+
+
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
   <ion-grid>
     <ion-row>
       <ion-col class="time">
         8
       </ion-col>
+      <h1 class="colon">:</h1>
       <ion-col class="time">
         51
       </ion-col>
@@ -22,20 +45,7 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-card>
-          <ion-card-content class="weather">
-            <h1>Olongapo City</h1>
-            <img src="/assets/thunderstorm.png">
-            <h3>24°C</h3>
-            <h3>Thunderstorm</h3>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  
 
   <ion-grid>
     <ion-row>
@@ -44,18 +54,18 @@
           <ion-card-header>
             <ion-grid>
               <ion-row>
-                <ion-col>
+                <ion-col size="6">
                   <img class="task" src="/assets/task.png">
                 </ion-col>
-                <ion-col>
-                  <ion-card-title style="text-align:right;color:#fff">9:00 AM</ion-card-title>
+                <ion-col size="6">
+                  <ion-card-title class="timesched" style="text-align:right;color:#fff">9:00 AM</ion-card-title>
                 </ion-col>
               </ion-row>
             </ion-grid>
           </ion-card-header>
           
           <ion-card-content>
-            <h2 class="title">Watch Anime</h2>
+            <h3 class="title">Watch Anime</h3>
             <h4 class="description">Will Watch bla bla bla bla</h4>
           </ion-card-content>
         </ion-card>
@@ -64,7 +74,7 @@
   </ion-grid>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button [routerLink]="['/schedules/add-schedule']">
+    <ion-fab-button href="/add-schedule">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

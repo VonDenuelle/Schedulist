@@ -3,18 +3,8 @@
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header>
-
-            <div class="avatar-header">
-              <ion-icon class="avatar" name="person-circle"></ion-icon>
-              <div class="avatar-text">
-                <p class="name" *ngIf="users.decodedToken.name != undefined">{{users.decodedToken.name}}</p>
-                <p>{{users.decodedToken.email}}</p>
-              </div>
-            </div>
-                
-          </ion-list-header>
-
+          <ion-list-header>Inbox</ion-list-header>
+          <ion-note>hi@ionicframework.com</ion-note>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item st routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
@@ -22,13 +12,15 @@
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
-
-          <ion-button (click)="logout()">
-            <ion-icon slot="start" name="log-out"></ion-icon>
-            Log out
-          </ion-button>
         </ion-list>
 
+        <ion-list id="labels-list">
+
+          <ion-item *ngFor="let label of labels" lines="none">
+            <ion-icon slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
+            <ion-label>{{ label }}</ion-label>
+          </ion-item>
+        </ion-list>
         <div class="footer">
           <p>Thaien Devs © 2022</p>
         </div>        

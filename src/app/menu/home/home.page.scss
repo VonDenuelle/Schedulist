@@ -1,3 +1,7 @@
+ion-toolbar{
+    --background:#05575F ;
+    --color: #FCC07A ;
+}
 
 .time{
     background: #05575F ;
@@ -6,15 +10,46 @@
     margin:5px;
     padding:20px;
     text-align: center;
-
+    border-radius: 10px;
 }
+
+h1.wtitle{
+    text-decoration: underline;
+}
+
+h1.colon{
+    font-size: 45px;
+    color: #05575F;
+}
+
+ion-card.weathercard{
+    height: 126px;
+}
+
+img.weathericon{
+    height: 63px;
+    float: left;
+    margin-left: .6in;
+}
+
+h3.weatherlabels, .weathertemp{
+    float: right;
+    margin-right: .6in;
+}
+
+.weathertemp{
+    margin-top: .2in;
+    margin-right: .9in;
+}
+
 .weather{
     text-align: center;
+    
 }
 .schedule{
     background: #05575F ;
     border-radius: 10px;
-    padding:20px;
+    padding: 10px;
 }
 
 .title{
@@ -32,9 +67,11 @@ hr{
     text-align:center;
     font-size: 20px;
 }
+
 ion-fab-button{
     --background:#05575F;
 }
+
 .task{
     height:30px;
     width:30px;
