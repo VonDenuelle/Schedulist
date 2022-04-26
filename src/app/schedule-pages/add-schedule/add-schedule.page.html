@@ -12,7 +12,7 @@
   <!-- Time Input -->
   <ion-item class="time-input-wrapper"  lines="none">
     <ion-item lines="none" button="true" id="open-date-input" class="time-input" >
-      <ion-label>{{ dateValue2 }}</ion-label>
+      <ion-label>{{ formatDate(dateValue2) }}</ion-label>
  
       <ion-popover trigger="open-date-input" show-backdrop="false">
         <ng-template>
@@ -20,7 +20,7 @@
             hour-cycle="h12" locale="zh-HK"
             #popoverTime 
             presentation="time"
-            (ionChange)="dateValue2 = formatDate(popoverTime.value)"
+            (ionChange)="dateValue2 = popoverTime.value"
           ></ion-datetime>
         </ng-template>
       </ion-popover>
@@ -43,24 +43,31 @@
   
   
     <!-- Input -->
-    <ion-card class="inputs">
-      <ion-item>
-        <ion-label position="floating"><ion-icon name="document-text"></ion-icon> Title</ion-label>
-        <ion-input required="true" spellcheck="true" clear-input="true"></ion-input>
-      </ion-item>  
-    </ion-card>
-  
-    <ion-card class="inputs">
-      <ion-item>
-        <ion-label position="floating"><ion-icon name="document-text"></ion-icon> Description</ion-label>
-        <ion-textarea rows="7" spellcheck="true" clear-input="true"></ion-textarea>
-      </ion-item>
-    </ion-card>
+    <form  [formGroup]="form">
+      <ion-card class="inputs">
+        <ion-item>
+          <ion-label position="floating"><ion-icon name="document-text"></ion-icon> Title</ion-label>
+          <ion-input formControlName="title" required="true" spellcheck="true" clear-input="true"></ion-input>
+        </ion-item>  
+        <app-error-message [field]="$any(form.get('title'))" error="required" message="Title cannot be empty">
+        </app-error-message>
+      </ion-card>
+    
+      <ion-card class="inputs">
+        <ion-item>
+          <ion-label position="floating"><ion-icon name="document-text"></ion-icon> Description</ion-label>
+          <ion-textarea formControlName="description" rows="7" spellcheck="true" clear-input="true"></ion-textarea>
+        </ion-item>
+        <app-error-message [field]="$any(form.get('description'))" error="required" message="Description cannot be empty">
+        </app-error-message>
+      </ion-card>
+    </form>
+   
  
 <!-- Checkbox -->
     <ion-item class="vibrate" lines="none">
       <ion-label>Vibrate</ion-label>
-      <ion-checkbox slot="start"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="vibrateStatus" slot="start"></ion-checkbox>
     </ion-item>
 
 <!-- Buttons -->
@@ -70,7 +77,7 @@
       <ion-label>Delete</ion-label> 
     </ion-button>
 
-    <ion-button class="save">
+    <ion-button [disabled]="dayCounter == 0 || !form.valid ? true : false" class="save" (click)="save()">
       <ion-icon slot="end" name="checkmark-circle"></ion-icon>
       <ion-label>Save</ion-label> 
     </ion-button>
@@ -78,23 +85,3 @@
  
   </ion-content>
   
-  <!-- <ion-footer class="ion-no-border" >
-    <ion-toolbar class="footer">
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-button class="option">
-              <ion-icon slot="end" name="trash"></ion-icon>
-              Delete
-            </ion-button>
-          </ion-col>
-          <ion-col>
-            <ion-button class="option1">
-              <ion-icon slot="end" name="checkmark-circle"></ion-icon>
-              Save
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-  </ion-toolbar>
-  </ion-footer> -->

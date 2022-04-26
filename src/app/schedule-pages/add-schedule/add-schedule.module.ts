@@ -1,19 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
 import { AddSchedulePageRoutingModule } from './add-schedule-routing.module';
 
 import { AddSchedulePage } from './add-schedule.page';
+import { ErrorMessageComponentModule } from 'src/app/components/error-message.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AddSchedulePageRoutingModule
+    AddSchedulePageRoutingModule,
+    ReactiveFormsModule,
+    ErrorMessageComponentModule
   ],
   declarations: [AddSchedulePage]
 })

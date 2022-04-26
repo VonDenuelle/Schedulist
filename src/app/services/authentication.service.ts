@@ -33,6 +33,7 @@ export class AuthenticationService {
     if (token && token.value) {
       this.token = token.value;
       this.retrievePayload(this.token)
+      
       this.isAuthenticated.next(true)  // sets true if user has the right token
     } else{
       this.isAuthenticated.next(false);
@@ -89,14 +90,14 @@ export class AuthenticationService {
   /**
    *  Decodes Token and Sets Decoded Token Payloads to users access
    */
-  retrievePayload(token){
-    this.decodedToken = helper.decodeToken(token) // Decode token and send to public services
-
+ async retrievePayload(token){
+   this.decodedToken =  await helper.decodeToken(token) // Decode token and send to public services
     /**
      *   This prevents error from loading details immediately on side menu (refer to users.services.ts comments)
      */
     this.users.decodedToken.name = this.decodedToken.name; 
     this.users.decodedToken.email = this.decodedToken.email; 
     this.users.decodedToken.id = this.decodedToken.id; 
+
   }
 }
