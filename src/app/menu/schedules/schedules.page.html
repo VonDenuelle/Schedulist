@@ -35,9 +35,7 @@
       </ion-card-content>
     </ion-card>
   </div>
-  <app-schedules-list title="Sample Title" time="8:30 AM"></app-schedules-list>
-  <app-schedules-list title="Sample Title 2" time="9:30 M"></app-schedules-list>
-  <app-schedules-list title="Sample Title 3" time="1:30 PM"></app-schedules-list>
+  <app-schedules-list *ngFor="let res of todaySchedules" title="{{res.title}}" time="{{formatDate(res.time)}}"></app-schedules-list>
 
 </ion-content>
 

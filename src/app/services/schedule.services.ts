@@ -10,6 +10,15 @@ export class ScheduleService {
   constructor(private http: HttpClient) { }
 
   /**
+   *  API Content-Type Differences
+   * @param formData  
+   * @returns application/x-www-form-urlencoded
+   * 
+   * @param json
+   * @returns application/json
+   */
+
+  /**
    * Adding Schedule API Connections
    */
 
@@ -25,5 +34,27 @@ export class ScheduleService {
     
     
     return this.http.post(environment.localhost + 'post/add-schedule.php', formData)
+  }
+
+  /**
+   *  Displaying Schedule API Connections
+   */
+
+   todaySchedules(userid, day){
+    let json = {
+      'userid' : userid,
+      'day' : day
+    }
+
+    return this.http.post(environment.localhost + "post/today-schedules.php", json)
+  }
+
+
+  allSchedules(userid){
+    let json = {
+      'userid' : userid
+    }
+
+    return this.http.post(environment.localhost + "post/all-schedules.php", json)
   }
 }

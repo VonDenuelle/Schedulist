@@ -12,7 +12,7 @@
   <!-- Time Input -->
   <ion-item class="time-input-wrapper"  lines="none">
     <ion-item lines="none" button="true" id="open-date-input" class="time-input" >
-      <ion-label>{{ formatDate(dateValue2) }}</ion-label>
+      <ion-label>{{ dateValue2 }}</ion-label>
  
       <ion-popover trigger="open-date-input" show-backdrop="false">
         <ng-template>
@@ -20,7 +20,7 @@
             hour-cycle="h12" locale="zh-HK"
             #popoverTime 
             presentation="time"
-            (ionChange)="dateValue2 = popoverTime.value"
+            (ionChange)="dateValue2 = formatDate(popoverTime.value) "
           ></ion-datetime>
         </ng-template>
       </ion-popover>

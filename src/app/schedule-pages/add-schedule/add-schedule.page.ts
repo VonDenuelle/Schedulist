@@ -6,7 +6,7 @@ import {
   MenuController,
   ToastController,
 } from '@ionic/angular';
-import { format, formatISO, parseISO } from 'date-fns';
+import * as moment from 'moment';
 import { ScheduleService } from 'src/app/services/schedule.services';
 import { UserService } from 'src/app/services/users.services';
 import { AddScheduleForm } from './add-schedule.page.form';
@@ -38,7 +38,7 @@ export class AddSchedulePage implements OnInit {
   /**
    *  =============== Variables
    */
-  dateValue2 = formatISO(new Date(), { format: 'basic' }); // sets default current time to label and format to ISO
+  dateValue2 = moment().format('hh:mm A')// sets default current time to label
 
   days = [
     { day: 'Mon', toggle: false },
@@ -72,21 +72,24 @@ export class AddSchedulePage implements OnInit {
   // Time Formatting
   formatDate(time) {
     this.checkDayToggleStatus();
-    const formattedString = format(parseISO(time), 'hh:mm a');
+    const formattedString = moment(time).format('hh:mm A')
     return formattedString;
   }
+
 
   // Task Toggle
   taskStatusChange() {
     this.checkDayToggleStatus();
   }
 
+  
   // Day Toggles
   toggleDay(day) {
     day.toggle == false ? (day.toggle = true) : (day.toggle = false);
     this.checkDayToggleStatus();
   }
 
+  
   // Buttons : Delete or Save
   async save() {
     const loading = await this.loadingController.create();
@@ -99,7 +102,7 @@ export class AddSchedulePage implements OnInit {
           .addSchedule(
             this.users.decodedToken.id,
             this.days[index].day,
-            this.formatDate(this.dateValue2),
+            moment(this.dateValue2, "hh:mm A").format('HH:mm:ss'),
             this.form.get('title').value,
             this.form.get('description').value,
             this.vibrateStatus,
@@ -123,7 +126,7 @@ export class AddSchedulePage implements OnInit {
           this.form.get('description').value,
           this.vibrateStatus,
           this.taskStatus,
-          this.formatDate(this.dateValue2),
+          moment(this.dateValue2, "hh:mm A").format('HH:mm:ss'),
           this.days[index].day
         );
       }

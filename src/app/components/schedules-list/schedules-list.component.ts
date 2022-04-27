@@ -1,5 +1,7 @@
 import { Time } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { ListModalComponent } from '../list-modal/list-modal.component';
 
 @Component({
   selector: 'app-schedules-list',
@@ -10,10 +12,12 @@ export class SchedulesListComponent implements OnInit {
 
   @Input() time: string
   @Input() title: string
+  
 
   idType
   taskStatus : boolean
-  constructor() { }
+  constructor(
+    public modalController: ModalController) { }
 
   ngOnInit() {
   
@@ -32,5 +36,20 @@ export class SchedulesListComponent implements OnInit {
   taskChange(){
       console.log(this.taskStatus);
       
+  }
+
+  
+  // present Modal
+  async presentModal(title) {
+    console.log(title);
+    
+    const modal = await this.modalController.create({
+      component: ListModalComponent,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        'title': title
+      }
+    });
+    return await modal.present();
   }
 }
