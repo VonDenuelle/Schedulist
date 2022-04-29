@@ -3,3 +3,11 @@ ion-accordion.accordion-expanded ion-item[slot="header"] {
   --background: #05575F;
   --color: #fff;
 }
+ion-content{
+  --background:#dff2ef;
+
+  ion-list{
+  background:#dff2ef;
+  }
+
+}

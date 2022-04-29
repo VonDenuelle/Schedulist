@@ -17,7 +17,14 @@
         <ion-label>{{item}}</ion-label>
       </ion-item>
       <ion-list slot="content">
-          <app-schedules-list *ngFor="let res of temporaryScheduleHolder" title={{res.title}} time={{res.time}}></app-schedules-list>
+        <app-schedules-list 
+          *ngFor="let res of temporaryScheduleHolder;let indexOfelement=index;" 
+          index={{indexOfelement}}
+          toggle={{res.toggle}} 
+          id={{res.id}} 
+          title={{res.title}} 
+          time={{formatDate(res.time)}}>
+        </app-schedules-list>
       </ion-list>
     </ion-accordion>
 

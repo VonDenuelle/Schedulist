@@ -36,6 +36,7 @@
         <ion-col *ngFor="let day of days">
           <ion-button (click)="toggleDay(day)"
           [ngClass]="{'datebuttonActive' : day.toggle == true}"
+          [disabled]="update_flag == true ? true : false"
            class="datebutton">{{day.day}}</ion-button>
         </ion-col>
       </ion-row>

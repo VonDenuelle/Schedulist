@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, IterableDiffers, OnInit, ViewChild } from '@angular/core';
 import { IonAccordionGroup, MenuController } from '@ionic/angular';
+import * as moment from 'moment';
 import { ScheduleService } from 'src/app/services/schedule.services';
 import { UserService } from 'src/app/services/users.services';
 
@@ -15,13 +16,15 @@ export class AllSchedulesPage implements OnInit {
   constructor(
     public menuCtrl: MenuController,
     private schedule: ScheduleService,
-    public users: UserService
-  ) {}
+    public users: UserService,
+
+  ) { }
 
   ngOnInit() {}
 
+
   ionViewWillEnter() {
-    this.menuCtrl.enable(true); //enable sidemenu
+    this.menuCtrl.enable(false); //disable sidemenu
 
     //preload all schedules
     this.schedule.allSchedules(this.users.decodedToken.id).subscribe(
@@ -53,12 +56,19 @@ export class AllSchedulesPage implements OnInit {
   ];
 
   // Arrays for responses
-  todaySchedules : any = [];
-  temporaryScheduleHolder: any = [];
-
+  todaySchedules
+  temporaryScheduleHolder
+  iterableDiffer
   /**
    *  =========== Functions
    */
+  
+  // Time Formatting - 24 hour (From mysql) to 12 hour
+  formatDate(time) {
+    const formattedString = moment(time, "HH:mm:ss").format('hh:mm A')
+    return formattedString;
+  }
+
   getScheduleByDay(day) {
     this.temporaryScheduleHolder = []; // reset to none
     let abbr = day.substring(0, 3);
@@ -76,5 +86,29 @@ export class AllSchedulesPage implements OnInit {
       }
       i++;
     }
+  }
+
+  
+  deleteFromList(index, id){
+    /**
+     *  First, Remove the element based on index clicked from temporaryScheduleHolder array 
+     *  ( different index ) as it changes based on day 
+     * 
+     *  then, get the index from todaySchedules array
+     *  ( that previously fetched everything )
+     *  based on the id(from response) who was clicked 
+     *  and remove the element
+     *  
+     *  this causes to completely REMOVE IT FROM BOTH ARRAYS without having any issues
+     *  of reloading the unupdated list 
+     */
+    this.temporaryScheduleHolder.splice(index, 1)  // remove on position, how many  
+
+    for (let i = 0; i < this.todaySchedules.length; i++) {
+      if (this.todaySchedules[i].id == id) {
+        this.todaySchedules.splice(i, 1) 
+      }      
+    }
+
   }
 }

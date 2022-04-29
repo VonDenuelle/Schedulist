@@ -35,7 +35,23 @@
       </ion-card-content>
     </ion-card>
   </div>
-  <app-schedules-list *ngFor="let res of todaySchedules" title="{{res.title}}" time="{{formatDate(res.time)}}"></app-schedules-list>
-
+  <app-schedules-list 
+    *ngFor="let res of todaySchedules;let indexOfelement=index;" 
+    index={{indexOfelement}} 
+    toggle={{res.toggle}}  
+    id={{res.id}} 
+    title={{res.title}} 
+    time={{formatDate(res.time)}}>
+  </app-schedules-list>
+ 
+  <br>
+  <br>
+  <br>
+  <br>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [routerLink]="['/schedules/add-schedule']">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
 

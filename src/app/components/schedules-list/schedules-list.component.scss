@@ -12,3 +12,42 @@ ion-toggle {
   ion-icon{
     margin-right: 15px;
   }
+
+  .time-input-wrapper{
+    width: 90%;
+  }
+
+  ion-item{
+    padding: 3px 12px;
+    --border-radius: 10px
+  }
+
+  ion-item-option, ion-item-sliding{
+    margin: 3px 0;
+  
+  }
+
+  ion-item-options{
+    padding: 3px 0 3px 12px;
+
+    border-radius: 10px
+  }
+
+
+  ion-item-sliding.item-sliding-active-slide {
+    .item-wrap, .time-input-wrapper{
+      --background: #05575F;
+    }
+    ion-item{
+      
+      ion-label , .sc-ion-label-md-s>p{
+        color : #fff !important; 
+      }
+       
+    }
+
+    ion-toggle {
+    --background-checked:#fff;
+    --handle-background-checked: #8eb6ba;
+    }
+  }

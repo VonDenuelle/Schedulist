@@ -18,10 +18,10 @@ export class ScheduleService {
    * @returns application/json
    */
 
+
   /**
    * Adding Schedule API Connections
    */
-
   addSchedule(userid, day, time, title, description, vibrate, toggle){
     let formData = new FormData();
         formData.append('userid' , userid);
@@ -36,10 +36,10 @@ export class ScheduleService {
     return this.http.post(environment.localhost + 'post/add-schedule.php', formData)
   }
 
+
   /**
    *  Displaying Schedule API Connections
    */
-
    todaySchedules(userid, day){
     let json = {
       'userid' : userid,
@@ -49,12 +49,40 @@ export class ScheduleService {
     return this.http.post(environment.localhost + "post/today-schedules.php", json)
   }
 
-
   allSchedules(userid){
     let json = {
       'userid' : userid
     }
 
     return this.http.post(environment.localhost + "post/all-schedules.php", json)
+  }
+
+  scheduleById(id){
+    return this.http.get(environment.localhost + "get/scheduleby-id.php?id=" + id)
+  }
+
+  /**
+   *  Updating Schedules
+   */
+  updateSchedule(id, time, title, description, vibrate, toggle){
+    let json = {
+      'id' : id,
+      'time' : time,
+      'title' : title,
+      'description' : description,
+      'vibrate' : vibrate,
+      'toggle' : toggle
+
+    }
+
+    return this.http.patch(environment.localhost + "patch/update-schedule.php", json)
+  }
+
+  
+  /**
+   *  Deleting Schedules
+   */
+   deleteSchedule(id){
+    return this.http.get(environment.localhost + "delete/delete-schedule.php?id=" + id)
   }
 }
