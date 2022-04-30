@@ -34,13 +34,22 @@ export class AddSchedulePage implements OnInit {
 
   ionViewWillEnter() {
     this.menuCtrl.enable(false); //disable sidemenu
-    this.checkDayToggleStatus();
+    this.checkDayToggleStatus(); 
 
+    // Pre loads all Schedules upon entering
+    this.loadAllSchedules()
+
+    /**
+     *  Get info from GET Query and 
+     *  checks if there is a params, then set the 
+     *  update_flag to true, meaning that it is an update
+     *  else is an add
+     */
     this.route.queryParamMap.subscribe((params) => {
       if (params.has('id')) {
         // Display information
         this.schedule.scheduleById(params.get('id')).subscribe(
-          (response: any) => {
+         async (response: any) => {
             console.log(response.response);
             
             //toggles the color of day that corresponds from the response
@@ -60,7 +69,7 @@ export class AddSchedulePage implements OnInit {
             this.vibrateStatus = response.response.vibrate == 0 ? true : false;  // tinyint to boolean
             this.taskStatus = response.response.toggle == 0 ? true : false;
           },
-          (error) => {
+          async (error) => {
             console.log(error);
           }
         );
@@ -79,15 +88,15 @@ export class AddSchedulePage implements OnInit {
   dateValue2 = moment().format('hh:mm A'); // sets default current time to label
 
   days = [
-    { day: 'Mon', toggle: false },
-    { day: 'Tue', toggle: false },
-    { day: 'Wed', toggle: false },
-    { day: 'Thu', toggle: false },
-    { day: 'Fri', toggle: false },
-    { day: 'Sat', toggle: false },
-    { day: 'Sun', toggle: false },
+    { day: 'Mon', toggle: false, badge: false },
+    { day: 'Tue', toggle: false, badge: false },
+    { day: 'Wed', toggle: false, badge: false },
+    { day: 'Thu', toggle: false, badge: false },
+    { day: 'Fri', toggle: false, badge: false },
+    { day: 'Sat', toggle: false, badge: false },
+    { day: 'Sun', toggle: false, badge: false },
   ];
-  dayCounter = 0;
+  dayCounter = 0; // responsible for disabling button if no day is toggled
 
   // Other Variables to pass on services
   vibrateStatus: boolean = false;
@@ -97,6 +106,11 @@ export class AddSchedulePage implements OnInit {
   // Update Variables
   update_flag: boolean = false;
   schedule_id;
+
+  // Holder of Preloaded schedules based on user id for checking of conflicts
+  allSchedules
+
+  disableSaveButtonIfConflictExist = false
 
   // toast messages
   async presentToast(message) {
@@ -127,6 +141,56 @@ export class AddSchedulePage implements OnInit {
   toggleDay(day) {
     day.toggle == false ? (day.toggle = true) : (day.toggle = false);
     this.checkDayToggleStatus();
+    
+
+    /**
+     *  Checks if the day selected by the user is
+     *  already existing corresponding with already selected time
+     */    
+    // 12 hour tp 24 hour format
+    let timeFormattedToMatchResponse = moment(this.dateValue2, 'hh:mm A').format('HH:mm:ss') 
+ 
+    this.allSchedules.forEach(element => {
+      if (day.toggle == true) { // if its only toggled on
+        if (element.day == day.day && element.time == timeFormattedToMatchResponse) {
+          day.badge = true // show badge
+        } 
+      } else {
+        day.badge= false // if not toggled, then badge shouldn't show
+      }
+    });
+
+    this.checkForConflictsOnSchedule()
+  }
+
+  // Time Changes
+  timeChange(time){
+    this.dateValue2 = this.formatDate(time)
+    /**
+     *  Always reset badge value when time changes,
+     *  and reapply it only if its toggled 
+     */
+    this.resetBadgeValue() 
+
+    /**
+     *  Checks if the time selected by the user is
+     *  already existing corresponding with already selected days
+     */    
+    // 12 hour tp 24 hour format
+    let timeFormattedToMatchResponse = moment(this.dateValue2, 'hh:mm A').format('HH:mm:ss') 
+    
+    this.allSchedules.forEach(schedule => { // loop all schedules
+      this.days.forEach(day => {  // loop days
+        if (day.toggle == true) { // if its only toggled on        
+          if (schedule.day == day.day && schedule.time == timeFormattedToMatchResponse) {
+            day.badge = true // show badge
+          } 
+        }
+      });
+    });
+
+    this.checkForConflictsOnSchedule()
+
   }
 
   // Buttons : Delete or Save
@@ -155,8 +219,10 @@ export class AddSchedulePage implements OnInit {
             .subscribe(
               async (response: any) => {
                 console.log('RESPONSE: ', response);
+                await this.loadAllSchedules() // reloads all schedules again since new one is added
                 await loading.dismiss();
                 this.presentToast(response.message);
+                
               },
               async (error) => {
                 console.log(error);
@@ -207,5 +273,48 @@ export class AddSchedulePage implements OnInit {
         this.dayCounter++;
       }
     }
+  }
+
+
+  //Check if there is still conflicts
+  checkForConflictsOnSchedule(){
+    this.disableSaveButtonIfConflictExist = false // reset
+    this.days.forEach(element => {
+       if (element.badge == true) {
+        this.disableSaveButtonIfConflictExist = true // reset
+       }
+    });
+  }
+
+  /**
+   *  Preloads all schedules based on user id
+   *  to reduce network calls since 
+   *  everytime user clicks a day, it will check if there is
+   *  a conflict to schedule
+   */
+  loadAllSchedules(){
+    this.schedule.allSchedules(this.users.decodedToken.id).subscribe(
+      async (response: any) => {
+        if (response.response != undefined) {
+          this.allSchedules = response.response;
+        }
+      },
+      async (error) => {
+        console.log(error);
+      }
+    );  
+  }
+  
+  /**
+   *  Reset Badge Value 
+   */
+  resetBadgeValue(){
+    this.days.forEach(element => {
+      element.badge = false
+    });
+  }
+  onClick(){
+    console.log("ge");
+    
   }
 }

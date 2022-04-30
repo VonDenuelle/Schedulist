@@ -29,9 +29,10 @@ export class AllSchedulesPage implements OnInit {
     //preload all schedules
     this.schedule.allSchedules(this.users.decodedToken.id).subscribe(
       async (response: any) => {
-        console.log(response.response);
-        this.todaySchedules = response.response;
-
+        if (response.response != undefined) {
+          this.todaySchedules = response.response;
+        }
+       
       },
       async (error) => {
         console.log(error);
@@ -56,8 +57,8 @@ export class AllSchedulesPage implements OnInit {
   ];
 
   // Arrays for responses
-  todaySchedules
-  temporaryScheduleHolder
+  todaySchedules : any[]
+  temporaryScheduleHolder : any[]
   iterableDiffer
   /**
    *  =========== Functions
@@ -77,14 +78,15 @@ export class AllSchedulesPage implements OnInit {
      * If the clicked accordion value(the day), is same with the day from the
      * response, then put that object to temporary array
      */
+    if (this.todaySchedules != undefined) { // if there is no schedules yet
+      let i = 0, len = this.todaySchedules.length; // caching length
 
-    let i = 0, len = this.todaySchedules.length; // caching length
-
-    while (i < len) {
-      if (this.todaySchedules[i].day == abbr) {
-        this.temporaryScheduleHolder.push(this.todaySchedules[i]);
+      while (i < len) {
+        if (this.todaySchedules[i].day == abbr) {
+          this.temporaryScheduleHolder.push(this.todaySchedules[i]);
+        }
+        i++;
       }
-      i++;
     }
   }
 

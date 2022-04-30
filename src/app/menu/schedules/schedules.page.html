@@ -29,12 +29,27 @@
 <ion-content>
 
   <div class="label-to-center">
-    <ion-card>
+    <ion-card class="header">
       <ion-card-content>
         <ion-label>Schedules for Today</ion-label>
       </ion-card-content>
     </ion-card>
   </div>
+
+  <!-- If there are no schedules -->
+  <ion-card class="no-schedules" *ngIf="todaySchedules == undefined">
+    <ion-item>
+      <ion-icon name="alert-circle-sharp" slot="start"></ion-icon>
+      <ion-label>No schedules set for today</ion-label>
+    </ion-item> 
+    
+    <ion-card-content>
+      <ion-img src="../../assets/calendar-logo.png" ></ion-img>
+      Start your productive day by setting up your schedules!
+    </ion-card-content>
+  </ion-card>
+
+
   <app-schedules-list 
     *ngFor="let res of todaySchedules;let indexOfelement=index;" 
     index={{indexOfelement}} 

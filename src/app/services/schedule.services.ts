@@ -85,4 +85,17 @@ export class ScheduleService {
    deleteSchedule(id){
     return this.http.get(environment.localhost + "delete/delete-schedule.php?id=" + id)
   }
+
+
+  /**
+   *  Checking For Conflicts
+   */
+  checkForConflictsOnSchedules(userid, day, time){
+    let json = {
+      'id' : userid,
+      'day' : day,
+      'time' : time
+    }
+    return this.http.post(environment.localhost + "post/check-day-and-time-conflicts.php", json)
+  }
 }

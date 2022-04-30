@@ -27,16 +27,15 @@ export class SchedulesPage implements OnInit {
     this.schedule.todaySchedules(this.users.decodedToken.id, this.day)
       .subscribe( 
         async (response : any) =>  {
-          this.todaySchedules = response.response;
-          this.stringifiedTodaySchedules = JSON.stringify(this.todaySchedules);
-
+          if (response.response != undefined) {
+            this.todaySchedules = response.response;
+          } 
         },
         async (error) =>{
           console.log(error);
           
         }
       );
-    
   }
 
   
@@ -45,7 +44,6 @@ export class SchedulesPage implements OnInit {
    */
    day = moment(new Date()).format('ddd'); 
    todaySchedules // response holder for todaySchedules
-   stringifiedTodaySchedules
 
  /**
    * ================= FUNCTIONS
@@ -63,7 +61,7 @@ export class SchedulesPage implements OnInit {
   }
 
 
-  public deleteFromList(index){
+   deleteFromList(index){
     this.todaySchedules.splice(index, 1)  // remove on position, how many  
   }
 }
