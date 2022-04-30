@@ -3,11 +3,47 @@
     <ion-buttons slot="end">
       <ion-button (click)="dismiss()">Close</ion-button>
     </ion-buttons>
-    <ion-title>List</ion-title>
+    <ion-title></ion-title>
   </ion-toolbar>
 </ion-header>
 
 
 <ion-content>
-  
+  <ion-text>
+    <h4>Sample List Title</h4>
+  </ion-text>
+
+  <ion-item>
+    <ion-label>Days: </ion-label>
+    <ion-input readonly value="Fri"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Time: </ion-label>
+    <ion-input readonly value="9:30 PM"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>List Description: </ion-label>
+    <ion-textarea readonly value="Sample Description Text"></ion-textarea>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>High Priority</ion-label>
+    <ion-toggle></ion-toggle>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Vibrate</ion-label>
+    <ion-toggle></ion-toggle>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Ringtone: </ion-label>
+    <ion-input readonly value="Morning Glory.mp3"></ion-input>
+    <!-- <ion-select placeholder="Default">
+      <ion-select-option value="default">Default</ion-select-option>
+    </ion-select> -->
+  </ion-item>
+
 </ion-content>
