@@ -42,7 +42,37 @@ ion-fab-button{
     --background:#05575F;
 }
   
+//  FONT FACES
+
+@font-face {
+    font-family: 'century-gothic-regular';
+    font-style: normal;
+    font-weight: normal;
+    src: url('./assets/fonts/Century Gothic.otf');
+    }
+
+@font-face {
+    font-family: 'century-gothic-bold';
+    font-style: normal;
+    font-weight: normal;
+    src: url('./assets/fonts/Century Gothic Bold.otf');
+    }
+
+@font-face {
+    font-family: 'century-gothic-italic';
+    font-style: normal;
+    font-weight: normal;
+    src: url('./assets/fonts/Century Gothic Italic.otf');
+    }
+
+@font-face {
+    font-family: 'century-gothic-bold-italic';
+    font-style: normal;
+    font-weight: normal;
+    src: url('./assets/fonts/Century Gothic Bold Italic.otf');
+    }
+
 
 ion-content{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'century-gothic-italic';
 }
