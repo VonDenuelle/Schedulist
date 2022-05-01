@@ -50,7 +50,7 @@ export class AuthenticationService {
      *  environment.lan = 192.168.1 ...
      *  environment.localhost = localhost ...
      */
-     return this.http.post(environment.localhost + "post/login.php", credentials).pipe(  
+     return this.http.post(environment.lan + "post/login.php", credentials).pipe(  
     // return this.http.post('https://reqres.in/api/login', credentials).pipe(
       map((data : any) => data.token),   //maps data like $.map in jquery
       switchMap(token =>{                 // switch to new observable 
@@ -69,7 +69,7 @@ export class AuthenticationService {
  * REGISTER
  */
   register(credentials): Observable<any>{
-    return this.http.post(environment.localhost + "post/register.php", credentials).pipe(
+    return this.http.post(environment.lan + "post/register.php", credentials).pipe(
       map((data : any) => data.token),   //maps data like $.map in jquery
       switchMap(token =>{                 // switch to new observable 
          this.retrievePayload(token)

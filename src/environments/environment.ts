@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  lan : 'http://192.168.1.4:8080/apischedulist/v1/',
+  lan : 'http://192.168.1.6:8080/apischedulist/v1/',
   localhost : 'http://localhost/apischedulist/v1/'
 };
 

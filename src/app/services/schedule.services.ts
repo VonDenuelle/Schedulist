@@ -33,7 +33,7 @@ export class ScheduleService {
         formData.append('toggle' , toggle);
     
     
-    return this.http.post(environment.localhost + 'post/add-schedule.php', formData)
+    return this.http.post(environment.lan + 'post/add-schedule.php', formData)
   }
 
 
@@ -46,7 +46,7 @@ export class ScheduleService {
       'day' : day
     }
 
-    return this.http.post(environment.localhost + "post/today-schedules.php", json)
+    return this.http.post(environment.lan + "post/today-schedules.php", json)
   }
 
   allSchedules(userid){
@@ -54,11 +54,11 @@ export class ScheduleService {
       'userid' : userid
     }
 
-    return this.http.post(environment.localhost + "post/all-schedules.php", json)
+    return this.http.post(environment.lan + "post/all-schedules.php", json)
   }
 
   scheduleById(id){
-    return this.http.get(environment.localhost + "get/scheduleby-id.php?id=" + id)
+    return this.http.get(environment.lan + "get/scheduleby-id.php?id=" + id)
   }
 
   /**
@@ -75,7 +75,15 @@ export class ScheduleService {
 
     }
 
-    return this.http.patch(environment.localhost + "patch/update-schedule.php", json)
+    return this.http.patch(environment.lan + "patch/update-schedule.php", json)
+  }
+
+  updateToggleStatus(id, toggle){
+    let json = {
+      'id' : id,
+      'toggle' : toggle
+    }
+    return this.http.patch(environment.lan + "patch/update-toggle-status.php", json)
   }
 
   
@@ -83,7 +91,7 @@ export class ScheduleService {
    *  Deleting Schedules
    */
    deleteSchedule(id){
-    return this.http.get(environment.localhost + "delete/delete-schedule.php?id=" + id)
+    return this.http.get(environment.lan + "delete/delete-schedule.php?id=" + id)
   }
 
 
@@ -96,6 +104,6 @@ export class ScheduleService {
       'day' : day,
       'time' : time
     }
-    return this.http.post(environment.localhost + "post/check-day-and-time-conflicts.php", json)
+    return this.http.post(environment.lan + "post/check-day-and-time-conflicts.php", json)
   }
 }

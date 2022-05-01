@@ -28,8 +28,16 @@
 
 // Global Toolbar
 ion-toolbar{
-    --background:#05575F ;
     --color: #FCC07A ;
+    --border-style : none;
+    --border-width :0;
+    font-family: 'century-gothic-bold';
+    --background: #9CC1C5;
+    text-shadow: 1px 1px 5px rgba(51, 51, 51, 0.714);
+    ion-buttons{
+        color: #bd7f37 ;
+    }
+  
 }
 
 // Landing Pages Background Color
@@ -74,5 +82,8 @@ ion-fab-button{
 
 
 ion-content{
-    font-family: 'century-gothic-italic';
+    font-family: 'century-gothic-regular';
+    --background: linear-gradient(0deg, #05575F 0%, #9CC1C5 100%);
+
+      
 }

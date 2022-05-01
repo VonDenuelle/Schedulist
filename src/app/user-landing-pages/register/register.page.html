@@ -33,10 +33,8 @@
           </ion-input>
         </ion-item>
 
-        <app-error-message [field]="$any(form.get('email'))" error="required" message="Email is empty">
-        </app-error-message>
-        <app-error-message [field]="$any(form.get('email'))" error="email" message="Email is invalid">
-        </app-error-message>
+        <app-error-message [field]="$any(form.get('email'))" error="required" message="Email is empty"></app-error-message>
+        <app-error-message [field]="$any(form.get('email'))" error="email" message="Email is invalid"></app-error-message>
       </div>
 
       <div class="input-container">

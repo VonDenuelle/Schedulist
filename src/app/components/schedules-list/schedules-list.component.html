@@ -10,7 +10,7 @@
         </ion-label>
       </ion-item>
       
-      <ion-toggle  [(ngModel)]="taskStatus" (ionChange)="taskChange(id)" slot="end"></ion-toggle>
+      <ion-toggle  [(ngModel)]="taskStatus" (ionChange)="taskChange(id, $event)" slot="end"></ion-toggle>
 
     </ion-item>
 

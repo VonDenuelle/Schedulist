@@ -20,12 +20,8 @@ export class AllSchedulesPage implements OnInit {
 
   ) { }
 
-  ngOnInit() {}
-
-
-  ionViewWillEnter() {
-    this.menuCtrl.enable(false); //disable sidemenu
-
+  ngOnInit() {
+    
     //preload all schedules
     this.schedule.allSchedules(this.users.decodedToken.id).subscribe(
       async (response: any) => {
@@ -40,6 +36,12 @@ export class AllSchedulesPage implements OnInit {
     );
 
   
+  }
+
+
+  ionViewWillEnter() {
+    this.menuCtrl.enable(false); //disable sidemenu
+
   
   }
 
@@ -59,7 +61,7 @@ export class AllSchedulesPage implements OnInit {
   // Arrays for responses
   todaySchedules : any[]
   temporaryScheduleHolder : any[]
-  iterableDiffer
+ 
   /**
    *  =========== Functions
    */
@@ -70,9 +72,9 @@ export class AllSchedulesPage implements OnInit {
     return formattedString;
   }
 
-  getScheduleByDay(day) {
-    this.temporaryScheduleHolder = []; // reset to none
-    let abbr = day.substring(0, 3);
+  async getScheduleByDay(day) {
+     this.temporaryScheduleHolder = []; // reset to none
+     let abbr = day.substring(0, 3);
 
     /**
      * If the clicked accordion value(the day), is same with the day from the
@@ -82,8 +84,8 @@ export class AllSchedulesPage implements OnInit {
       let i = 0, len = this.todaySchedules.length; // caching length
 
       while (i < len) {
-        if (this.todaySchedules[i].day == abbr) {
-          this.temporaryScheduleHolder.push(this.todaySchedules[i]);
+        if (  this.todaySchedules[i].day == abbr) {
+           this.temporaryScheduleHolder.push(this.todaySchedules[i]);
         }
         i++;
       }

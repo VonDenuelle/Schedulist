@@ -1,110 +1,124 @@
-ion-toolbar{
-    --background:#05575F ;
-    --color: #FCC07A ;
+
+
+ion-fab {
+  transform: translateZ(0)
 }
 
-.timerow{
-    margin:  0 !important;
-    padding: 0 !important;
-}
 
-.time{
-    background-color: #05575F;
-    font-size: 32px;
-    color:#fff;
-    padding: 20px;
-    margin:5px;
-    text-align: center;
-    border-radius: 10px;
-    margin-left: .1in;
-    margin-right: .1in;
-}
+ion-grid {
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  font-size: 14px;
+  font-family: 'century-gothic-bold';
+  text-align: center;
 
-// h1.wtitle{
-//     text-decoration: underline;
-//     text-align: center;
-//     font-size: 26px;
-//     margin-top: 0;
-// }
+  ion-col.location {
+    ion-label {
+      ion-icon {
+        color: #FCC07A;
+      }
+    }
+  }
 
-.colon{
-    font-size: 45px;
-    color: #05575F;
-    text-align: center;
-}
+  ion-col.weather {
+    position: relative;
+    display: flex;
+    justify-content: center;
 
-ion-card.weathercard{
-    height: 104px;
-    width: 2.6in;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
+    .glow-icon {
+      z-index: 10;
+      position: absolute;
+      display: block;
+      top: 50%;
+      left: 50%;
+      box-shadow:
+        0 0 30px 12px #05575F,
+        /* inner white */
+        0 0 44px 18px #9CC1C5,
+        /* middle magenta */
+        0 0 54px 28px #fff;
+      /* outer cyan */
+    }
 
-ion-card-content{
-    margin:  0 !important;
-    padding: 0 !important;
-}
+    fa-icon {
+      z-index: 20;
+      font-size: 32px;
+      color: #fff;
 
-img.weathericon{
-    height: 70px;
-}
+    }
+  }
 
-.weathertemp{
-    font-size: 25px;
-}
 
-.weather{
-    text-align: center;
-    margin-top: 7px;
-    margin-left: .3in;
-    margin-right: .3in;
-}
+  ion-col.clock {
+      margin-top: -10px;
+    .flex-text {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      font-family: 'century-gothic-bold';
 
-ion-card.schedule{
-    height: 200px;
-    background: #05575F ;
-    border-radius: 10px;
-    margin-left: .05in !important;
-    margin-right: .05in !important;
-    margin:  0 !important;
-    padding: 0 !important;
-}
+      h1 {
+        font-size: 40px;
+      }
 
-.timesched{
-    text-align: center !important;
-    font-size: 32px;
-}
+      h4 {
+        margin-top: 20px;
+        margin-left: 6px;
+        font-size: 16px;
+      }
+    }
+  }
 
-.title{
-    color:#fff;
-    text-align:center;
-    font-size: 26px;
-    padding: 0 !important;
-    margin: 0 !important;
-}
+  ion-col.task {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
 
-hr{
-    color: #fff;
-    height:5px;
-    width:90%;
-}
+    .card {
+    padding:6px  16px;
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.29);
 
-.schedtitle{
-    text-align: center;
-    color: #FCC07A;
-    text-decoration: underline;
-    padding: 0 !important;
-    margin: 0 !important;
-}
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    }
 
-.description{
-    color:#fff;
-    text-align:center;
-    font-size: 20px;
-}
+    .header{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        text-align: left;
 
-.task{
-    height:30px;
-    width:30px;
+        h1{
+            font-family: 'century-gothic-bold';
+            font-size: 20px;
+            margin-right: 14px;
+        }
+        ion-label{
+            background-color: rgb(108 18 18 / 14%);
+            border-radius: 20px;
+            padding: 5px;
+        }
+    }
+
+    .content{
+        margin-top: 16px;
+        font-family: 'century-gothic-regular';
+        font-size: 16px;
+        text-align: justify;
+    }
+
+    .footer{
+        width: 100%;
+        margin-top: 16px;
+        font-family: 'century-gothic-italic';
+        font-size: 16px;
+        text-align: left;
+    }
+  }
 }

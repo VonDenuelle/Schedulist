@@ -76,8 +76,19 @@ export class SchedulesListComponent implements OnInit {
 
   }
 
-  taskChange(id){
-      console.log();   
+  taskChange(id, event){
+    console.log(event.detail.checked);
+    console.log(id);
+    
+    this.schedule.updateToggleStatus(id, event.detail.checked)
+      .subscribe(
+        async (response : any) =>{
+          console.log(response);
+          
+        },
+        async (error) => {
+          console.log(error);
+        });
   }
 
   

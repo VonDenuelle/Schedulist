@@ -3,6 +3,20 @@
   background: #FCC07A;
 }
 
+ion-item.item-wrap{
+  --border-radius: 10px;
+  --background: rgba(255, 255, 255, 0.6);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  .time-input-wrapper{
+    width: 90%;
+    --background: none;
+  }
+}
+
 
 ion-toggle {
     --background-checked:#8eb6ba;
@@ -13,13 +27,10 @@ ion-toggle {
     margin-right: 15px;
   }
 
-  .time-input-wrapper{
-    width: 90%;
-  }
+
 
   ion-item{
     padding: 3px 12px;
-    --border-radius: 10px
   }
 
   ion-item-option, ion-item-sliding{
@@ -39,7 +50,6 @@ ion-toggle {
       --background: #05575F;
     }
     ion-item{
-      
       ion-label , .sc-ion-label-md-s>p{
         color : #fff !important; 
       }
