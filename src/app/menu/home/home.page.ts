@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +9,11 @@ import { MenuController } from '@ionic/angular';
 })
 export class HomePage implements OnInit {
 
-  constructor(public menuCtrl: MenuController) { }
+  currentTime = moment().format('hh : mm : ss') // initialieze
+  timeMeridiem
+  constructor(public menuCtrl: MenuController) { 
+    this.refreshTime()
+  }
 
   ngOnInit() {
   }
@@ -17,4 +22,13 @@ export class HomePage implements OnInit {
     this.menuCtrl.enable(true);  //enable sidemenu
    }
 
+   refreshTime(){
+    let intervalVar = setInterval(function () {
+      this.currentTime = moment().format('hh : mm : ss')
+      this.timeMeridiem = moment(new Date).format('a')
+    }.bind(this),1000)
+  
+    
+    
+   }
 }

@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border" [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -8,7 +8,7 @@
 </ion-header>
 
 
-<ion-content [fullscreen]="true">
+<ion-content>
   <ion-segment mode="md" [(ngModel)]="selected">
     <ion-segment-button mode="md" value="abtSched">
       <ion-label>ABOUT SCHEDULIST</ion-label>
@@ -91,7 +91,7 @@
 
       <ion-row>
         <ion-col>
-          <img src="../../assets/poch.png">
+          <img src="../../assets/ver.png">
           <p>Denverson Caacbay</p>
           <h5>Front-end Developer</h5>
         </ion-col>
@@ -104,4 +104,10 @@
     </ion-grid>
 
   </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [routerLink]="['/schedules/add-schedule']">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

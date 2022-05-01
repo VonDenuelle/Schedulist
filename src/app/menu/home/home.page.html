@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border" [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -9,59 +9,64 @@
 
 
 <ion-content>
-  <ion-grid>
+
+  <ion-grid fixed>
     <ion-row>
-      <ion-col class="time">
-        8
+      <ion-col size="4">
+        <ion-label>Cloudy</ion-label>
       </ion-col>
-      <ion-col class="time">
-        51
+      <ion-col size="4">
+        <ion-label>24°C</ion-label>
       </ion-col>
-      <ion-col class="time">
-        AM
+      <ion-col class="location" size="4">
+        <ion-label>
+          <ion-icon name="location-sharp"></ion-icon>
+          Olongapo City
+        </ion-label>
       </ion-col>
     </ion-row>
-  </ion-grid>
-  <ion-grid>
+
     <ion-row>
-      <ion-col>
-        <ion-card>
-          <ion-card-content class="weather">
-            <h1>Olongapo City</h1>
-            <img src="/assets/thunderstorm.png">
-            <h3>24°C</h3>
-            <h3>Thunderstorm</h3>
-          </ion-card-content>
-        </ion-card>
+      <ion-col class="weather" size="12">
+        <fa-icon icon="cloud"></fa-icon>
+        <div class="glow-icon"></div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col class="clock" size="12">
+        <div class="flex-text">
+          <h1>{{currentTime}}</h1>
+          <h4>{{timeMeridiem}}</h4>
+        </div>
+      </ion-col>
+    </ion-row>
+
+
+    <ion-row>
+      <ion-col size="12" class="task">
+        <div class="card">
+          <div class="header">
+            <h1>Sample Title</h1>
+              <ion-label color="danger">High Prioroty Task</ion-label>
+          </div>
+
+          <div class="content">
+            making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected hugewgwegewgwgewgwegwegwegwgwgwmour and the like).
+            will uncover many web sites still in their infancy.e (injected humo...
+            g it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected hugewgwegewgwgewgwegwegwegwgwgwmour and the like).
+          </div>
+
+          <div class="footer">
+            9:00 AM, Sun
+          </div>
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-card class="schedule">
-          <ion-card-header>
-            <ion-grid>
-              <ion-row>
-                <ion-col>
-                  <img class="task" src="/assets/task.png">
-                </ion-col>
-                <ion-col>
-                  <ion-card-title style="text-align:right;color:#fff">9:00 AM</ion-card-title>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-card-header>
-          
-          <ion-card-content>
-            <h2 class="title">Watch Anime</h2>
-            <h4 class="description">Will Watch bla bla bla bla</h4>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+
+  <br>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button [routerLink]="['/schedules/add-schedule']">

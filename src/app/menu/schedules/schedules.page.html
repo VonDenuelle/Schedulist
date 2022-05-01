@@ -1,5 +1,5 @@
 
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border" [translucent]="true">
   <ion-toolbar>
     <!-- BURGER -->
     <ion-buttons slot="start">
@@ -29,15 +29,44 @@
 <ion-content>
 
   <div class="label-to-center">
-    <ion-card>
+    <ion-card class="header">
       <ion-card-content>
         <ion-label>Schedules for Today</ion-label>
       </ion-card-content>
     </ion-card>
   </div>
-  <app-schedules-list title="Sample Title" time="8:30 AM"></app-schedules-list>
-  <app-schedules-list title="Sample Title 2" time="9:30 M"></app-schedules-list>
-  <app-schedules-list title="Sample Title 3" time="1:30 PM"></app-schedules-list>
 
+  <!-- If there are no schedules -->
+  <div class="no-schedules" *ngIf="todaySchedules == undefined">
+    <div class="header">
+      <ion-icon name="alert-circle-sharp" slot="start"></ion-icon>
+      <ion-label>No schedules set for today</ion-label>
+    </div>
+
+    <div class="content">
+      <ion-img src="../../assets/calendar-logo.png" ></ion-img>
+      Start your productive day by setting up your schedules! 
+     </div>
+  </div>
+
+
+  <app-schedules-list 
+    *ngFor="let res of todaySchedules;let indexOfelement=index;" 
+    index={{indexOfelement}} 
+    toggle={{res.toggle}}  
+    id={{res.id}} 
+    title={{res.title}} 
+    time={{formatDate(res.time)}}>
+  </app-schedules-list>
+ 
+  <br>
+  <br>
+  <br>
+  <br>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [routerLink]="['/schedules/add-schedule']">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
 

@@ -1,118 +1,162 @@
-ion-toolbar{
-    --background:#05575F ;
-    --color: #FCC07A ;
-}
+
 
 // Choose Days
-.datebutton{
-    font-size: 13px;
-    --background:#fff;
-    --border:#333 1px solid;
-    --border-radius: 50%;
-    color:#05575F;
-    width: 42px;
-    height: 42px;
+.datebutton {
+  font-size: 13px;
+  --background: rgba(255, 255, 255, 0.8);
+  --border: #333 1px solid;
+  --border-radius: 50%;
+  color: #05575F;
+  width: 42px;
+  height: 42px;
+  position: relative;
+
+  ion-badge {
+    position: absolute;
+    top: -10px;
+    right: -24px;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    --padding-start : 6.39px;
+    // display: none;
+  }
 }
-.datebuttonActive{
-    --background:#05575F;
-    color:#fff;
+
+ion-chip{
+  margin-bottom: 6px;
+
 }
-ion-col{
-    flex-grow: 0;
+//make ion-badge visible
+ion-button::part(native) {
+    overflow: visible !important;
+  }
+//display ion badge
+.badge-display-block{
+  display: block !important;
 }
+
+.datebuttonActive {
+  --background: #05575F;
+  color: #fff;
+}
+
+ion-col {
+  flex-grow: 0;
+}
+
 
 
 // Choose Time
-.time-input{
-    width: 100%;
-    --background: #fafafa;
-    
-    ion-label{
-        font-size: 36px;
-    }
+.time-input {
+  width: 100%;
+  --background: transparent;
 
+  ion-label {
+    font-size: 36px;
+  }
 }
 
-.time-input-wrapper{
-    margin: 20px;
-    width: 90%;
-    --background: #fafafa;
-    --border-radius: 15px;
+ion-datetime{
+  --ion-color-base: #FCC07A !important;
+  // --background-rgb: red;
+}
 
-    ion-toggle {
-        --background-checked:#8eb6ba;
-        --handle-background-checked: #05575F;
-      }
+.time-input-wrapper {
+  margin: 20px 20px 12px 20px;
+  width: 90%;
+
+  --background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+
+  --border-radius: 15px;
+
+  ion-toggle {
+    --background-checked: #8eb6ba;
+    --handle-background-checked: #05575F;
+  }
 }
 
 // Input Fields
-ion-card.inputs{
-    box-shadow: none;
-    border-top: 1px;
-    border-right: 1px;
-    border-left: 1px;
-    border-bottom: 0px;
-    border-color: #7070703e;
-    border-style: solid;
-   
-   
-    ion-item{
-        ion-label{
-            --color:#FCC07A;
-            --color-focused : #FCC07A;
-        }
-        .label-floating{
-            color: #FCC07A;
-        }
-        --highlight-color-focused: #FCC07A;
+ion-card.inputs {
+  box-shadow: none;
+  border : 0;
+  border-color: #7070703e;
+  border-style: solid;
+  --background: none;
+
+  ion-item {
+  --background: #fafafa;
+    ion-label {
+      --color: #FCC07A;
+      --color-focused: #FCC07A;
     }
+
+    .label-floating {
+      color: #FCC07A;
+    }
+
+    --highlight-color-focused: #FCC07A;
+  }
 }
 
 // Vibrate Item
 
-ion-item.vibrate{
-    ion-checkbox{
-        --border-color-checked: #05575F;
-        --background-checked: #05575F;
-    }
-    ion-label{
-        padding: 10px 0;
-        font-size: 24px;
-        border-left:0;
-        border-right: 0;
-        border-top: 1px;
-        border-bottom: 1px;
-        border-color: #7070703d;
-        border-style: solid;
-    }
+ion-item.vibrate {
+  --background : none;
+  color : #fff;
+  margin: 0 10px;
+  ion-checkbox {
+    --border-color-checked: #FCC07A;
+    --background-checked: #FCC07A;
+  }
+
+  ion-label {
+    padding: 10px 0;
+    font-size: 24px;
+    border-left: 0;
+    border-right: 0;
+    border-top: 1px;
+    border-bottom: 1px;
+    border-color: #7070703d;
+    border-style: solid;
+  }
 }
 
 // Buttons Delete & Save
-.buttons-flex{
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-top: 16px;
+.buttons-flex {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 16px;
 
-    ion-button{
-        flex-grow: 1;
-        margin: 12px;   
-        --background: #fafafa;
-    }
-    ion-button:active{
-        --background: #f1f1f1;
-    }
-    .delete{
-        ion-icon, ion-label{
-            color : #742020;
-        }
-    }
+  ion-button {
+    flex-grow: 1;
+    margin: 12px;
+    --background: #fafafa;
+  }
 
-    .save{
-        ion-icon, ion-label{
-            color : #FCC07A;
-        }
+  ion-button:active {
+    --background: #f1f1f1;
+  }
+
+  .delete {
+
+    ion-icon,
+    ion-label {
+      color: #742020;
     }
+  }
+
+  .save {
+
+    ion-icon,
+    ion-label {
+      color: #FCC07A;
+    }
+  }
 }
-

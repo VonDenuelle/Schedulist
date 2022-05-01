@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="ion-no-border" [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="home"></ion-back-button>
@@ -20,7 +20,7 @@
             hour-cycle="h12" locale="zh-HK"
             #popoverTime 
             presentation="time"
-            (ionChange)="dateValue2 = formatDate(popoverTime.value)"
+            (ionChange)="timeChange(popoverTime.value)"
           ></ion-datetime>
         </ng-template>
       </ion-popover>
@@ -32,35 +32,54 @@
 
     <!-- Toggle Buttons Days -->
     <ion-grid>
+        <ion-chip *ngIf="disableSaveButtonIfConflictExist" color="danger">
+          <ion-icon name="alert-circle"></ion-icon>
+          <ion-label>There is a conflict on schedule set</ion-label>
+        </ion-chip>
+
       <ion-row class="ion-justify-content-start ion-align-items-center">
         <ion-col *ngFor="let day of days">
           <ion-button (click)="toggleDay(day)"
           [ngClass]="{'datebuttonActive' : day.toggle == true}"
-           class="datebutton">{{day.day}}</ion-button>
+          [disabled]="update_flag == true ? true : false"
+           class="datebutton">
+           {{day.day}}
+
+           <ion-badge *ngIf="day.badge" (click)="onClick()"  color="danger">!</ion-badge>
+          </ion-button>
         </ion-col>
+
       </ion-row>
+     
     </ion-grid>
   
   
     <!-- Input -->
-    <ion-card class="inputs">
-      <ion-item>
-        <ion-label position="floating"><ion-icon name="document-text"></ion-icon> Title</ion-label>
-        <ion-input required="true" spellcheck="true" clear-input="true"></ion-input>
-      </ion-item>  
-    </ion-card>
-  
-    <ion-card class="inputs">
-      <ion-item>
-        <ion-label position="floating"><ion-icon name="document-text"></ion-icon> Description</ion-label>
-        <ion-textarea rows="7" spellcheck="true" clear-input="true"></ion-textarea>
-      </ion-item>
-    </ion-card>
+    <form  [formGroup]="form">
+      <ion-card class="inputs">
+        <ion-item>
+          <ion-label position="floating"><ion-icon name="document-text"></ion-icon> Title</ion-label>
+          <ion-input formControlName="title" required="true" spellcheck="true" clear-input="true"></ion-input>
+        </ion-item>  
+        <app-error-message [field]="$any(form.get('title'))" error="required" message="Title cannot be empty">
+        </app-error-message>
+      </ion-card>
+    
+      <ion-card class="inputs">
+        <ion-item>
+          <ion-label position="floating"><ion-icon name="document-text"></ion-icon> Description</ion-label>
+          <ion-textarea formControlName="description" rows="7" spellcheck="true" clear-input="true"></ion-textarea>
+        </ion-item>
+        <app-error-message [field]="$any(form.get('description'))" error="required" message="Description cannot be empty">
+        </app-error-message>
+      </ion-card>
+    </form>
+   
  
 <!-- Checkbox -->
     <ion-item class="vibrate" lines="none">
       <ion-label>Vibrate</ion-label>
-      <ion-checkbox slot="start"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="vibrateStatus" slot="start"></ion-checkbox>
     </ion-item>
 
 <!-- Buttons -->
@@ -70,7 +89,7 @@
       <ion-label>Delete</ion-label> 
     </ion-button>
 
-    <ion-button class="save">
+    <ion-button [disabled]="dayCounter == 0 || !form.valid ? true : false  || disableSaveButtonIfConflictExist" class="save" (click)="save()">
       <ion-icon slot="end" name="checkmark-circle"></ion-icon>
       <ion-label>Save</ion-label> 
     </ion-button>
@@ -78,23 +97,3 @@
  
   </ion-content>
   
-  <!-- <ion-footer class="ion-no-border" >
-    <ion-toolbar class="footer">
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-button class="option">
-              <ion-icon slot="end" name="trash"></ion-icon>
-              Delete
-            </ion-button>
-          </ion-col>
-          <ion-col>
-            <ion-button class="option1">
-              <ion-icon slot="end" name="checkmark-circle"></ion-icon>
-              Save
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-  </ion-toolbar>
-  </ion-footer> -->
