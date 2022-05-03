@@ -80,6 +80,25 @@ ion-datetime{
   }
 }
 
+// notification
+.notification{
+  width: 90%;
+  margin: auto;
+  --color : #fff;
+  --background: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  ion-select.select-expanded::part(icon){
+    color :#FCC07A !important;
+  
+  }  
+}
+
+.notification.item-has-focus {
+  --highlight-background:#FCC07A;
+}
+
 // Input Fields
 ion-card.inputs {
   box-shadow: none;
@@ -105,18 +124,18 @@ ion-card.inputs {
 
 // Vibrate Item
 
-ion-item.vibrate {
+ion-item.checkbox {
   --background : none;
   color : #fff;
-  margin: 0 10px;
+
   ion-checkbox {
     --border-color-checked: #FCC07A;
     --background-checked: #FCC07A;
   }
 
   ion-label {
-    padding: 10px 0;
-    font-size: 24px;
+    padding: 0;
+    font-size: 18px;
     border-left: 0;
     border-right: 0;
     border-top: 1px;

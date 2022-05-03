@@ -10,6 +10,11 @@ export class ListModalComponent implements OnInit {
   // Data passed in by componentProps
   @Input() title: string;
   @Input() description: string;
+  @Input() time
+  @Input() day
+  @Input() ringtone
+  @Input() priority
+  @Input() vibrate
   @Input() middleInitial: string;
 
 

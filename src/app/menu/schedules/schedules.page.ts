@@ -1,6 +1,6 @@
 import { Time } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { MenuController, ModalController, PopoverController } from '@ionic/angular';
+import { LoadingController, MenuController, ModalController, PopoverController } from '@ionic/angular';
 import { format, parseISO } from 'date-fns';
 import * as moment from 'moment';
 import { ListModalComponent } from 'src/app/components/list-modal/list-modal.component';
@@ -17,23 +17,33 @@ export class SchedulesPage implements OnInit {
     private popoverController: PopoverController,
     public menuCtrl: MenuController,
     private schedule: ScheduleService,
-    public users: UserService
+    public users: UserService,
+    public loadingController: LoadingController
   ) {}
 
   ngOnInit() {}
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
     this.menuCtrl.enable(true); //enable sidemenu
+
+    const loading = await this.loadingController.create({
+      spinner: 'bubbles',
+      message: "Please wait while we load your schedules",
+      translucent: true
+    });
+    await loading.present();
+
     this.schedule.todaySchedules(this.users.decodedToken.id, this.day)
       .subscribe( 
         async (response : any) =>  {
           if (response.response != undefined) {
             this.todaySchedules = response.response;
+            await loading.dismiss();
           } 
         },
         async (error) =>{
           console.log(error);
-          
+          await loading.dismiss();
         }
       );
   }
@@ -59,6 +69,16 @@ export class SchedulesPage implements OnInit {
   async DismissClick() {
     await this.popoverController.dismiss();
   }
+
+
+   /** 
+   *  Update Contents instead of always recreating ionic components
+   *  by tracking if schedule.id changes. it its the same than before 
+   *  then dont recreate it 
+   */
+    trackById(index, schedule){
+      return schedule.id;
+    }
 
 
    deleteFromList(index){

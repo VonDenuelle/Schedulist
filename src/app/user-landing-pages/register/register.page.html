@@ -59,10 +59,11 @@
       </div>
 
 
-      <ion-button type="submit" [disabled]="!form.valid" size="block" (click)="signup()">Sign up</ion-button>
+      <ion-button class="button-sign" type="submit" [disabled]="!form.valid" size="block" (click)="signup()">Sign up</ion-button>
 
       <p class="ion-text-center">Already have an account? <a [routerLink]="['/login']">Sign In</a></p>
-
+      <br>
+      <br>
     </form>
   </ion-card>
 </ion-content>

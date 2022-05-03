@@ -72,7 +72,7 @@ export class AllSchedulesPage implements OnInit {
     return formattedString;
   }
 
-  async getScheduleByDay(day) {
+   getScheduleByDay(day) {
      this.temporaryScheduleHolder = []; // reset to none
      let abbr = day.substring(0, 3);
 
@@ -92,6 +92,14 @@ export class AllSchedulesPage implements OnInit {
     }
   }
 
+  /** 
+   *  Update Contents instead of always recreating ionic components
+   *  by tracking if schedule.id changes. it its the same than before 
+   *  then dont recreate it 
+   */
+  trackById(index, schedule){
+    return schedule.id;
+  }
   
   deleteFromList(index, id){
     /**

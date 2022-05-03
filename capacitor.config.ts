@@ -12,7 +12,13 @@ const config: CapacitorConfig = {
       "splashImmersive": false,
       "backgroundColor": "#ffffff" ,
       "launchShowDuration": 3000
-  }
+  },
+  // "LocalNotifications": {
+  //   "smallIcon": "ic_stat_ssss",
+  //   "iconColor": "#05575F",
+  //   "sound" : 'samsung_over_the_horizon.wav'
+  // }
+
 }
   
 };

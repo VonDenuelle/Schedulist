@@ -12,13 +12,15 @@
   <ion-accordion-group>
 
 
-    <ion-accordion (click)="getScheduleByDay(item)" *ngFor="let item of days" value={{item}} toggle-icon="chevron-down" >
+    <ion-accordion (click)="getScheduleByDay(item)"
+     *ngFor="let item of days"
+      value={{item}} toggle-icon="chevron-down" >
       <ion-item slot="header">
         <ion-label>{{item}}</ion-label>
       </ion-item>
       <ion-list slot="content">
         <app-schedules-list 
-          *ngFor="let res of temporaryScheduleHolder;let indexOfelement=index;" 
+          *ngFor="let res of temporaryScheduleHolder;let indexOfelement=index; trackBy:trackById" 
           index={{indexOfelement}}
           toggle={{res.toggle}} 
           id={{res.id}} 

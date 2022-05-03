@@ -8,6 +8,7 @@ import {
   ToastController,
 } from '@ionic/angular';
 import * as moment from 'moment';
+import { NotificationsService } from 'src/app/services/notifications.services';
 import { ScheduleService } from 'src/app/services/schedule.services';
 import { UserService } from 'src/app/services/users.services';
 import { AddScheduleForm } from './add-schedule.page.form';
@@ -25,7 +26,8 @@ export class AddSchedulePage implements OnInit {
     private formBuilder: FormBuilder,
     public toastController: ToastController,
     private loadingController: LoadingController,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public notifications : NotificationsService
   ) {}
 
   ngOnInit() {
@@ -51,14 +53,15 @@ export class AddSchedulePage implements OnInit {
         this.schedule.scheduleById(params.get('id')).subscribe(
          async (response: any) => {
             console.log(response.response);
-            
+
             //toggles the color of day that corresponds from the response
             this.days.forEach((element) => {
               if (element.day == response.response.day) {
                 element.toggle = true;
               }
             });
-
+            this.notify = response.response.notify_before
+            this.priority = response.response.priority == 0 ? true : false;
             this.dateValue2 = moment(response.response.time, 'HH:mm:ss').format(
               'hh:mm A'
             );
@@ -68,6 +71,9 @@ export class AddSchedulePage implements OnInit {
               .setValue(response.response.description);
             this.vibrateStatus = response.response.vibrate == 0 ? true : false;  // tinyint to boolean
             this.taskStatus = response.response.toggle == 0 ? true : false;
+
+            this.checkDayToggleStatus()
+            
           },
           async (error) => {
             console.log(error);
@@ -102,7 +108,8 @@ export class AddSchedulePage implements OnInit {
   vibrateStatus: boolean = false;
   taskStatus: boolean = false;
   form: FormGroup;
-
+  notify = '10' // default value
+  priority : boolean = false
   // Update Variables
   update_flag: boolean = false;
   schedule_id;
@@ -124,7 +131,11 @@ export class AddSchedulePage implements OnInit {
   /**
    * ================= FUNCTIONS
    */
-
+  // Notify Before
+   notifyOptions(){
+    console.log(this.notify);
+    
+   }
   // Time Formatting
   formatDate(time) {
     this.checkDayToggleStatus();
@@ -202,6 +213,7 @@ export class AddSchedulePage implements OnInit {
      *  Checks if update flag is false, then it is an add query to API
      *  else an updated query to API
      */
+    
     if (this.update_flag == false) {
       for (let index = 0; index < this.days.length; index++) {
         if (this.days[index].toggle == true) {
@@ -214,12 +226,15 @@ export class AddSchedulePage implements OnInit {
               this.form.get('title').value,
               this.form.get('description').value,
               this.vibrateStatus,
-              this.taskStatus
+              this.taskStatus,
+              this.notify,
+              this.priority
             )
             .subscribe(
               async (response: any) => {
                 console.log('RESPONSE: ', response);
                 await this.loadAllSchedules() // reloads all schedules again since new one is added
+                await this.notifications.setNotificationForToday() // recall notifications 
                 await loading.dismiss();
                 this.presentToast(response.message);
                 
@@ -237,7 +252,9 @@ export class AddSchedulePage implements OnInit {
             this.vibrateStatus,
             this.taskStatus,
             moment(this.dateValue2, 'hh:mm A').format('HH:mm:ss'),
-            this.days[index].day
+            this.days[index].day,
+            this.notify,
+            this.priority
           );
         }
       }
@@ -251,11 +268,14 @@ export class AddSchedulePage implements OnInit {
           this.form.get('title').value,
           this.form.get('description').value,
           this.vibrateStatus,
-          this.taskStatus
+          this.taskStatus,
+          this.notify,
+          this.priority
         )
         .subscribe(
           async (response: any) => {
             await loading.dismiss();
+            await this.notifications.setNotificationForToday() // recall notifications 
             this.presentToast(response.message);
           },
           async (error) => {
@@ -312,9 +332,5 @@ export class AddSchedulePage implements OnInit {
     this.days.forEach(element => {
       element.badge = false
     });
-  }
-  onClick(){
-    console.log("ge");
-    
   }
 }

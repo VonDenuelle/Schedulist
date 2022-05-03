@@ -4,6 +4,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { SchedulesPage } from 'src/app/menu/schedules/schedules.page';
 import { AllSchedulesPage } from 'src/app/schedule-pages/all-schedules/all-schedules.page';
+import { NotificationsService } from 'src/app/services/notifications.services';
 import { ScheduleService } from 'src/app/services/schedule.services';
 import { ListModalComponent } from '../list-modal/list-modal.component';
 
@@ -16,8 +17,15 @@ export class SchedulesListComponent implements OnInit {
 
   @Input() time
   @Input() title
-  @Input() id 
+  @Input() description
+  @Input() vibrate
+  @Input() ringtone
+  @Input() priority
   @Input() toggle 
+  @Input() day
+
+  @Input() id 
+  
   @Input() index
 
 
@@ -29,7 +37,8 @@ export class SchedulesListComponent implements OnInit {
     private loadingController: LoadingController,
     public toastController: ToastController,
     private schedules: SchedulesPage,  // call a function from schedules page, to remove an element without api calls
-    private allSchedules: AllSchedulesPage
+    private allSchedules: AllSchedulesPage,
+    public notifications : NotificationsService
    ) {  }
 
   ngOnInit() {
@@ -60,10 +69,12 @@ export class SchedulesListComponent implements OnInit {
            if (this.router.url == '/schedules/all-schedules') {
             console.log('all');
             await this.allSchedules.deleteFromList(index, id)  
+            await this.notifications.setNotificationForToday() // recall notifications 
             await loading.dismiss();
           } else {
             console.log('sched');
             await this.schedules.deleteFromList(index)  
+            await this.notifications.setNotificationForToday() // recall notifications 
             await loading.dismiss();
           }
       
@@ -84,7 +95,7 @@ export class SchedulesListComponent implements OnInit {
       .subscribe(
         async (response : any) =>{
           console.log(response);
-          
+          await this.notifications.setNotificationForToday() // recall notifications since toggle has been changed
         },
         async (error) => {
           console.log(error);
@@ -102,14 +113,20 @@ export class SchedulesListComponent implements OnInit {
     }
 
   // present Modal
-  async presentModal(title) {
+  async presentModal(title, description, priority, vibrate, ringtone, time, day) {
     console.log(title);
     
     const modal = await this.modalController.create({
       component: ListModalComponent,
       cssClass: 'my-custom-class',
       componentProps: { 
-        'title': title
+        'title': title,
+        'description' : description,
+        'toggle' : priority,
+        'vibrate' : vibrate  == 0 ? true : false,
+        'ringtone' : ringtone  == 0 ? true : false,
+        'time' : time,
+        'day' : day,
       }
     });
     return await modal.present();

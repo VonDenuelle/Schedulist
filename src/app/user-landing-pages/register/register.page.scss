@@ -63,8 +63,10 @@ h3.signin-label {
       }
     }
   }
-  
-
+  .button-sign{
+    margin-top: 24px;
+  }
+ 
   @media only screen and (max-height: 600px) {
     ion-card {
         height:auto;

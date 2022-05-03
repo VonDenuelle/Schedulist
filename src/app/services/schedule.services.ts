@@ -22,7 +22,7 @@ export class ScheduleService {
   /**
    * Adding Schedule API Connections
    */
-  addSchedule(userid, day, time, title, description, vibrate, toggle){
+  addSchedule(userid, day, time, title, description, vibrate, toggle, notify, priority){
     let formData = new FormData();
         formData.append('userid' , userid);
         formData.append('day' , day);
@@ -31,13 +31,15 @@ export class ScheduleService {
         formData.append('description' , description);
         formData.append('vibrate' , vibrate);
         formData.append('toggle' , toggle);
+        formData.append('notify', notify);
+        formData.append('priority' , priority);
     
     
     return this.http.post(environment.lan + 'post/add-schedule.php', formData)
   }
 
 
-  /**
+  /** 
    *  Displaying Schedule API Connections
    */
    todaySchedules(userid, day){
@@ -64,14 +66,16 @@ export class ScheduleService {
   /**
    *  Updating Schedules
    */
-  updateSchedule(id, time, title, description, vibrate, toggle){
+  updateSchedule(id, time, title, description, vibrate, toggle, notify, priority){
     let json = {
       'id' : id,
       'time' : time,
       'title' : title,
       'description' : description,
       'vibrate' : vibrate,
-      'toggle' : toggle
+      'toggle' : toggle,
+      'notify' : notify,
+      'priority' : priority
 
     }
 

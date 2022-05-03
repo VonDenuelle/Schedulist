@@ -2,7 +2,7 @@
   <!-- Multi-line sliding item with icon options-->
   <ion-item-sliding>
     <ion-item class="item-wrap" lines="none"  detail="true" slot="start" >
-      <ion-item  lines="none" (click)="presentModal(title)"  class="time-input-wrapper">
+      <ion-item  lines="none" (click)="presentModal(title,description, priority, vibrate, ringtone, time, day)"  class="time-input-wrapper">
         <ion-label>
           <h1>{{time}}</h1>
           <p>{{title}}</p>

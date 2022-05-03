@@ -29,6 +29,19 @@
     <ion-toggle [(ngModel)]="taskStatus" (ionChange)="taskStatusChange()" slot="end"></ion-toggle>
   </ion-item>
    
+  <!-- Notify Before -->
+
+  <ion-item class="notification">
+    <ion-label >Notify Before</ion-label>
+    <ion-select [(ngModel)]="notify" (ionChange)="notifyOptions();" value="{{notify}}" interface="action-sheet">
+      <ion-select-option value="10">10 minutes</ion-select-option>
+      <ion-select-option value="20">20 minutes</ion-select-option>
+      <ion-select-option value="30">30 minutes</ion-select-option>
+      <ion-select-option value="40">40 minutes</ion-select-option>
+      <ion-select-option value="50">50 minutes</ion-select-option>
+      <ion-select-option value="60">60 minutes</ion-select-option>
+    </ion-select>
+  </ion-item>
 
     <!-- Toggle Buttons Days -->
     <ion-grid>
@@ -45,7 +58,7 @@
            class="datebutton">
            {{day.day}}
 
-           <ion-badge *ngIf="day.badge" (click)="onClick()"  color="danger">!</ion-badge>
+           <ion-badge *ngIf="day.badge"  color="danger">!</ion-badge>
           </ion-button>
         </ion-col>
 
@@ -77,9 +90,13 @@
    
  
 <!-- Checkbox -->
-    <ion-item class="vibrate" lines="none">
+    <ion-item class="checkbox" lines="none">
       <ion-label>Vibrate</ion-label>
       <ion-checkbox [(ngModel)]="vibrateStatus" slot="start"></ion-checkbox>
+    </ion-item>
+    <ion-item class="checkbox" lines="none">
+      <ion-label>High Priority Task</ion-label>
+      <ion-checkbox [(ngModel)]="priority" slot="start"></ion-checkbox>
     </ion-item>
 
 <!-- Buttons -->

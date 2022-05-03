@@ -51,11 +51,16 @@
 
 
   <app-schedules-list 
-    *ngFor="let res of todaySchedules;let indexOfelement=index;" 
+    *ngFor="let res of todaySchedules;let indexOfelement=index; trackBy:trackById" 
     index={{indexOfelement}} 
     toggle={{res.toggle}}  
     id={{res.id}} 
     title={{res.title}} 
+    description={{res.description}} 
+    vibrate={{res.vibrate}} 
+    ringtone={{res.ringtone}} 
+    priority={{res.priority}} 
+    day={{res.day}} 
     time={{formatDate(res.time)}}>
   </app-schedules-list>
  
