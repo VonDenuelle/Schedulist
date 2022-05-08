@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+*{
+   font-family: 'Montserrat', sans-serif;
+}
+
+.card{
+   border-style: solid;
+   border-color:  rgb(30, 39, 46) !important;
+   border-width: 3px;
+}
+.card-title{
+   text-align: center ;
+}
+
+.card-body{
+   text-align: center ;
+}
+
+img.prod-display{
+   height: 150px !important;
+   width: fit-content !important;
+}
+
+img.card-imgs{
+   height: 100px !important;
+   width: 100px !important;
+}
+
+
+/* flower */
+.flower-flex{
+   display: flex;
+   flex-wrap: wrap;
+   flex-grow: 1;
+   justify-content: space-evenly;
+   align-items: flex-start;
+
+}
+.flower-card .card-body, .flower-card  .card-title{
+   text-align: left;
+}
+.flower-card{
+   margin: 6px;
+   text-decoration: none;
+}
+
+.flower-card .card{
+   max-width: 540px;
+ }
+
+.flower-card h5{
+   color: black;
+   font-weight: 800;
+}
+.flower-card p{
+   color: #333;
+}
+.flower-card li.price{
+   color : #696969;
+   font-weight: 600;
+}
+
+.flower-card li{
+   color : #8c8c8c;
+}
+
+
+@media only screen and (max-width: 1395px) {
+   .flower-card .card{
+     width: 840px;
+     max-width:840px;
+   }
+ }
+@media only screen and (max-width: 995px) {
+   .flower-card .card{
+     width: 640px;
+     max-width:640px;
+   }
+ }
+@media only screen and (max-width: 770px) {
+   .flower-card .card{
+     width: 440px;
+     max-width:440px;
+   }
+ }
