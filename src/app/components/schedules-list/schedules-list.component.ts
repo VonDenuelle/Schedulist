@@ -118,11 +118,10 @@ export class SchedulesListComponent implements OnInit {
     
     const modal = await this.modalController.create({
       component: ListModalComponent,
-      cssClass: 'my-custom-class',
       componentProps: { 
         'title': title,
         'description' : description,
-        'toggle' : priority,
+        'priority' : priority == 0? true : false,
         'vibrate' : vibrate  == 0 ? true : false,
         'ringtone' : ringtone  == 0 ? true : false,
         'time' : time,

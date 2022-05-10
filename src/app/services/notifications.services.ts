@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { RESOURCE_CACHE_PROVIDER } from '@angular/platform-browser-dynamic';
 import {
   Channel,
   LocalNotifications,
@@ -13,39 +14,39 @@ import { UserService } from './users.services';
 })
 export class NotificationsService {
   constructor(private schedule: ScheduleService, public users: UserService) {
-  }
 
+  }
   day = moment(new Date()).format('ddd');
   dayToEnum;
 
   async setNotificationForToday() {
     // run once
-    this.setNotification()
+    this.notification()
     // Sets interval so it will always refresh when next day comes
     setInterval(
       function () {
-        this.setNotification()
+        this.notification()
       }.bind(this),
       this.checkForNextDay()
     );
   }
 
-  setNotification(){
+  notification(){
     this.schedule
-    .todaySchedules(this.users.decodedToken.id, this.day)
+    .todaySchedules(this.users.decodedToken.id, this.day) 
     .subscribe(
       async (response: any) => {
         console.log(response);
         
         if (response.response != undefined) {
-          console.log(response);
+          console.log(LocalNotifications.listChannels());
           console.log(LocalNotifications.getPending());
 
           /**
            *  Convert Weekday names Abbrevaition to full name
            *  then convert it to System ENUMS
            */
-          this.convertDaytoEnum(response.response);
+          // this.convertDaytoEnum(response.response);
 
           /**
            *  Loops respose
@@ -61,9 +62,13 @@ export class NotificationsService {
               }); // deletes all channels
             }
           );
+          await this.deleteNotification() // deletets pending notif to reset
 
+ 
+          
           response.response.forEach(async (res) => {
             if (res.toggle == 0) {
+
               await LocalNotifications.createChannel({
                 id: res.id,
                 importance: 5,
@@ -71,41 +76,109 @@ export class NotificationsService {
                 visibility: 1,
                 vibration: res.vibrate == 0 ? true : false,
                 sound: 'samsung_over_the_horizon.wav',
-              }); // creates new channel
+              }); // creates new channel for EXACT TIME NOTIFICATION
 
-              // Sets up schedule based on created channel with same id as response
-              LocalNotifications.schedule({
+                 // create date obj
+              let myDate = new Date(
+                new Date().getFullYear(),
+                new Date().getMonth(),
+                new Date().getDate(),
+                moment(res.time, 'HH:mm:ss').format('HH') as unknown as number,
+                moment(res.time, 'HH:mm:ss').format('mm') as unknown as number,
+                moment(res.time, 'HH:mm:ss').format('ss') as unknown as number
+              )
+    
+
+              //====================== NOTIFY BEFORE
+              // Sets up notification before the EXACT TIME NOTIFICATION ( notify_before)
+              LocalNotifications.createChannel({
+                id: "NOTIFY_BEFORE",
+                importance: 3,
+                name: 'NOTIFY_BEFORE NAME',
+                visibility: 1,
+                vibration: true,
+                sound: 'notify_before.wav',
+              }); // creates new channel for NOTIFY BEFORE NOTIFICATION
+
+              let notifyBefore = moment(myDate).subtract(res.notify_before, 'minutes')
+              let notifyBeforeDate = notifyBefore.toDate()
+              
+             await LocalNotifications.schedule({
                 notifications: [
                   {
                     title: res.title,
-                    body: 'Join the academfewy',
-                    id: res.id,
+                    body: res.notify_before + " minutes before this schedule will run",
+                    id: res.notify_before + res.id,
                     smallIcon: 'ic_stat_ssss',
                     iconColor: '#05575F',
-                    ongoing: true,
-                    autoCancel: false,
-                    channelId: res.id,
+                    channelId: 'NOTIFY_BEFORE',
+                    extra : {
+                      id : res.id,
+                      description : res.description,
+                      title : res.title,
+                      priority : res.priority,
+                      vibrate : res.vibrate,
+                      ringtone : res.ringtone,
+                      time : res.time,
+                      day : res.day                      
+                    },
                     schedule: {
-                      on: {
-                        weekday: this.dayToEnum,
-                        hour: moment(res.time, 'HH:mm:ss').format(
-                          'HH'
-                        ) as unknown as number,
-                        minute: moment(res.time, 'HH:mm:ss').format(
-                          'mm'
-                        ) as unknown as number,
-                        second: 0,
-                      },
+                      at: new Date(notifyBeforeDate),
                       allowWhileIdle: true,
                     },
                   },
                 ],
               });
+
+
+
+              // ====================== EXACT TIME NOTIFICATION
+              // Sets up schedule based on created channel with same id as response
+              await LocalNotifications.schedule({
+                notifications: [
+                  {
+                    title: res.title,
+                    body: res.description.substring(0, 20),
+                    largeBody: res.description,
+                    id: res.id,
+                    smallIcon: 'ic_stat_ssss',
+                    iconColor: '#05575F',
+                    ongoing: true,
+                    channelId: res.id,
+                    extra : {
+                      id : res.id,
+                      description : res.description,
+                      title : res.title,
+                      priority : res.priority,
+                      vibrate : res.vibrate,
+                      ringtone : res.ringtone,
+                      time : res.time,
+                      day : res.day                      
+                    },
+                    schedule: {
+                      at: new Date(myDate),
+                      // on: {
+                      //   weekday: this.dayToEnum,
+                      //   hour: moment(res.time, 'HH:mm:ss').format(
+                      //     'HH'
+                      //   ) as unknown as number,
+                      //   minute: moment(res.time, 'HH:mm:ss').format(
+                      //     'mm'
+                      //   ) as unknown as number,
+                      //   second: 0,
+                      // },
+
+                      allowWhileIdle: true,
+                    },
+                  },
+                ],
+              });
+
+              console.log(LocalNotifications.getPending());
+              
+              
             }
           });
-
-          console.log('pending ', LocalNotifications.getPending());
-          console.log(LocalNotifications.listChannels());
         }
       },
       async (error) => {
@@ -161,7 +234,30 @@ export class NotificationsService {
       .asMilliseconds(); // get duration difference in minutes
 
     console.log(currentTimeIntervalToNextDay, currentTime, nextDay);
-    
+
     return currentTimeIntervalToNextDay;
   }
+
+  /**
+   * Resets notification each day
+   */
+  deleteNotification(){
+    LocalNotifications.getPending().then(async (element) => {
+      
+      element.notifications.forEach(async (element) => {
+        console.log(element.id);
+        
+        await LocalNotifications.cancel({
+          notifications : [
+            {
+              id : element.id
+            }
+          ]
+        })
+      });
+    })
+  }
+
+
+
 }

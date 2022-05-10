@@ -20,7 +20,10 @@ export class ListModalComponent implements OnInit {
 
   constructor(public modalController: ModalController) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.priority);
+    
+  }
 
   dismiss() {
     // using the injected ModalController this page

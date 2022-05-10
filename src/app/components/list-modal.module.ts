@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { BrowserModule } from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
 import { ListModalComponent } from "./list-modal/list-modal.component";
 
@@ -9,7 +9,8 @@ import { ListModalComponent } from "./list-modal/list-modal.component";
     imports: [
     CommonModule,
     FormsModule,
-    IonicModule
+    IonicModule,
+    BrowserModule
 ],
     declarations: [ListModalComponent],
     exports: [ListModalComponent]

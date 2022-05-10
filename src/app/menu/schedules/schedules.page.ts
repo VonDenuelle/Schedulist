@@ -38,8 +38,9 @@ export class SchedulesPage implements OnInit {
         async (response : any) =>  {
           if (response.response != undefined) {
             this.todaySchedules = response.response;
-            await loading.dismiss();
+           
           } 
+          await loading.dismiss();
         },
         async (error) =>{
           console.log(error);

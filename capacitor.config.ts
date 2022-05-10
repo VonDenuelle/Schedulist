@@ -16,7 +16,7 @@ const config: CapacitorConfig = {
   // "LocalNotifications": {
   //   "smallIcon": "ic_stat_ssss",
   //   "iconColor": "#05575F",
-  //   "sound" : 'samsung_over_the_horizon.wav'
+  //   "sound" : 'bell.wav'
   // }
 
 }
