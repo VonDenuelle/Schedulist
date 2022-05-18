@@ -81,10 +81,18 @@ export class AuthenticationService {
     )
   }
 
-  logout() : Promise<void>{
+  logout(){
     this.isAuthenticated.next(false);
-    return Storage.remove({key : TOKEY_KEY})
-  }
+    
+    Storage.keys().then( key => {
+      key.keys.forEach(element => {
+        console.log(element);
+        if (element != 'channels-status') { // do not remove notification channel on logout 
+          Storage.remove({key : element})
+        }
+      });
+    })
+   }
 
 
   /**

@@ -5,9 +5,13 @@ import {
   LocalNotifications,
   Weekday,
 } from '@capacitor/local-notifications';
+import { Storage } from '@capacitor/storage';
 import * as moment from 'moment';
 import { ScheduleService } from './schedule.services';
 import { UserService } from './users.services';
+
+const CHANNEL_KEY = 'channels-status';
+
 
 @Injectable({
   providedIn: 'root',
@@ -18,18 +22,29 @@ export class NotificationsService {
   }
   day = moment(new Date()).format('ddd');
   dayToEnum;
+  channelPriority = ''
 
   async setNotificationForToday() {
-    // run once
-    this.notification()
-    // Sets interval so it will always refresh when next day comes
-    setInterval(
-      function () {
+    const channelKey = await Storage.get({key : CHANNEL_KEY});
+    if (channelKey.value == '' || channelKey.value == undefined) {
+      console.log("Has to run once creating CHANNEL");
+      
+      await this.createAllChannels() // create all channels then set storage key to status good
+      await Storage.set({key : CHANNEL_KEY, value : 'Good'})
+    } else {
+        // run once
         this.notification()
-      }.bind(this),
-      this.checkForNextDay()
-    );
+        // Sets interval so it will always refresh when next day comes
+        setInterval(
+          function () {
+            this.notification()
+          }.bind(this),
+          this.checkForNextDay()
+        );
+          }
   }
+
+
 
   notification(){
     this.schedule
@@ -39,44 +54,36 @@ export class NotificationsService {
         console.log(response);
         
         if (response.response != undefined) {
-          console.log(LocalNotifications.listChannels());
-          console.log(LocalNotifications.getPending());
-
-          /**
+          console.log( await LocalNotifications.listChannels());
+          
+          /** DOESNT NEED YET !!!
            *  Convert Weekday names Abbrevaition to full name
            *  then convert it to System ENUMS
            */
           // this.convertDaytoEnum(response.response);
 
-          /**
+          /** DOESNT NEED YET !!!
            *  Loops respose
            *  delete existing channels to only hold alarms set for today
            *  then create channels for every response
            */
-          (await LocalNotifications.listChannels()).channels.forEach(
-            async (element) => {
-              LocalNotifications.deleteChannel({
-                id: element.id,
-                name: element.name,
-                importance: element.importance,
-              }); // deletes all channels
-            }
-          );
+          // (await LocalNotifications.listChannels()).channels.forEach(
+          //   async (element) => {
+          //     if(element.id != 'default'){  // do not delete default notif channel
+          //       await LocalNotifications.deleteChannel({
+          //         id: element.id,
+          //         name: element.name,
+          //         importance: element.importance,
+          //       }); // deletes all channels
+          //     }
+          //   }
+          // );
           await this.deleteNotification() // deletets pending notif to reset
 
  
           
           response.response.forEach(async (res) => {
             if (res.toggle == 0) {
-
-              await LocalNotifications.createChannel({
-                id: res.id,
-                importance: 5,
-                name: res.title,
-                visibility: 1,
-                vibration: res.vibrate == 0 ? true : false,
-                sound: 'samsung_over_the_horizon.wav',
-              }); // creates new channel for EXACT TIME NOTIFICATION
 
                  // create date obj
               let myDate = new Date(
@@ -88,19 +95,8 @@ export class NotificationsService {
                 moment(res.time, 'HH:mm:ss').format('ss') as unknown as number
               )
     
-
-              //====================== NOTIFY BEFORE
-              // Sets up notification before the EXACT TIME NOTIFICATION ( notify_before)
-              LocalNotifications.createChannel({
-                id: "NOTIFY_BEFORE",
-                importance: 3,
-                name: 'NOTIFY_BEFORE NAME',
-                visibility: 1,
-                vibration: true,
-                sound: 'notify_before.wav',
-              }); // creates new channel for NOTIFY BEFORE NOTIFICATION
-
-              let notifyBefore = moment(myDate).subtract(res.notify_before, 'minutes')
+ // ====================== NOTIFY BEFORE TIME NOTIFICATION
+              let notifyBefore = moment(myDate).subtract(res.notify_before, 'minutes') // time calculated for notify_before
               let notifyBeforeDate = notifyBefore.toDate()
               
              await LocalNotifications.schedule({
@@ -108,10 +104,10 @@ export class NotificationsService {
                   {
                     title: res.title,
                     body: res.notify_before + " minutes before this schedule will run",
-                    id: res.notify_before + res.id,
+                    id: res.notify_before + res.id ,
                     smallIcon: 'ic_stat_ssss',
                     iconColor: '#05575F',
-                    channelId: 'NOTIFY_BEFORE',
+                    channelId: 'wav_notify_before',
                     extra : {
                       id : res.id,
                       description : res.description,
@@ -132,7 +128,13 @@ export class NotificationsService {
 
 
 
-              // ====================== EXACT TIME NOTIFICATION
+ // ====================== EXACT TIME NOTIFICATION
+              if (res.priority == 0) { // if high prio, set ringtoe to high_priority wav
+                this.channelPriority = 'wav_high_priority'
+              } else { // else none
+                this.channelPriority = 'wav_teruhashi'
+              }
+
               // Sets up schedule based on created channel with same id as response
               await LocalNotifications.schedule({
                 notifications: [
@@ -140,11 +142,11 @@ export class NotificationsService {
                     title: res.title,
                     body: res.description.substring(0, 20),
                     largeBody: res.description,
-                    id: res.id,
+                    id: res.id ,
                     smallIcon: 'ic_stat_ssss',
                     iconColor: '#05575F',
                     ongoing: true,
-                    channelId: res.id,
+                    channelId: this.channelPriority,
                     extra : {
                       id : res.id,
                       description : res.description,
@@ -157,17 +159,6 @@ export class NotificationsService {
                     },
                     schedule: {
                       at: new Date(myDate),
-                      // on: {
-                      //   weekday: this.dayToEnum,
-                      //   hour: moment(res.time, 'HH:mm:ss').format(
-                      //     'HH'
-                      //   ) as unknown as number,
-                      //   minute: moment(res.time, 'HH:mm:ss').format(
-                      //     'mm'
-                      //   ) as unknown as number,
-                      //   second: 0,
-                      // },
-
                       allowWhileIdle: true,
                     },
                   },
@@ -241,8 +232,8 @@ export class NotificationsService {
   /**
    * Resets notification each day
    */
-  deleteNotification(){
-    LocalNotifications.getPending().then(async (element) => {
+  async deleteNotification(){
+    await LocalNotifications.getPending().then(async (element) => {
       
       element.notifications.forEach(async (element) => {
         console.log(element.id);
@@ -259,5 +250,89 @@ export class NotificationsService {
   }
 
 
+  async createAllChannels(){
+    // Notify_before.wav ============
+    await LocalNotifications.createChannel({
+      id: "wav_notify_before",
+      importance: 3,
+      name: 'wav notify before ringtone',
+      visibility: 1,
+      vibration: true,
+      sound: 'notify_before.wav',
+    }); 
+
+    // samsung over the horizon .wav ============
+    await LocalNotifications.createChannel({
+      id: "wav_samsung_over_the_horizon",
+      importance: 3,
+      name: 'samsung over the horizon ringtone',
+      visibility: 1,
+      vibration: true,
+      sound: 'samsung_over_the_horizon.wav',
+    }); 
+
+    // classic alarm ringtone .wav ============
+    await LocalNotifications.createChannel({
+      id: "wav_clasic_alarm_rington",
+      importance: 3,
+      name: 'classic alarm ringtont ringtone',
+      visibility: 1,
+      vibration: true,
+      sound: 'classic_alarm_ringtone.wav',
+    }); 
+
+    // teruhashi .wav ============
+    await LocalNotifications.createChannel({
+      id: "wav_teruhashi",
+      importance: 3,
+      name: 'teruhashi ringtone',
+      visibility: 1,
+      vibration: true,
+      sound: 'teruhashi.wav',
+    }); 
+
+    // saiki op .wav ============
+    await LocalNotifications.createChannel({
+      id: "wav_saiki",
+      importance: 3,
+      name: 'saiki ringtone',
+      visibility: 1,
+      vibration: true,
+      sound: 'saiki.wav',
+    }); 
+
+
+    // cute beat ringtone .wav ============
+    await LocalNotifications.createChannel({
+      id: "wav_beat",
+      importance: 3,
+      name: 'beat ringtone ringtone',
+      visibility: 1,
+      vibration: true,
+      sound: 'cute_beat_ringtone.wav', 
+    }); 
+
+    //samsung morning flower .wav ============
+    await LocalNotifications.createChannel({
+      id: "wav_samsung_morning_flower",
+      importance: 3,
+      name: 'samsung morning flower ringtone',
+      visibility: 1,
+      vibration: true,
+      sound: 'samsung_morning_flower.wav',
+    }); 
+
+    //high priority ringtone .wav ============
+    await LocalNotifications.createChannel({
+      id: "wav_high_priority",
+      importance: 3,
+      name: 'high priority ringtone',
+      visibility: 1,
+      vibration: true,
+      sound: 'high_priority_ringtone.wav',
+    }); 
+
+
+  }
 
 }

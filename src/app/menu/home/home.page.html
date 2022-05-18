@@ -53,18 +53,16 @@
       <ion-col size="12" class="task">
         <div class="card">
           <div class="header">
-            <h1>Sample Title</h1>
-              <ion-label color="danger">High Prioroty Task</ion-label>
+            <h1>{{title}}</h1>
+              <ion-label color="danger" *ngIf="priority == 'true'">High Prioroty Task</ion-label>
           </div>
 
           <div class="content">
-            making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected hugewgwegewgwgewgwegwegwegwgwgwmour and the like).
-            will uncover many web sites still in their infancy.e (injected humo...
-            g it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected hugewgwegewgwgewgwegwegwegwgwgwmour and the like).
+            {{description}}
           </div>
 
           <div class="footer">
-            9:00 AM, Sun
+            {{time}}, {{day}}
           </div>
         </div>
       </ion-col>

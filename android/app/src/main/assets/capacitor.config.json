@@ -11,5 +11,8 @@
 			"backgroundColor": "#ffffff",
 			"launchShowDuration": 3000
 		}
+	},
+	"server": {
+		"url": "http://192.168.1.5:8100"
 	}
 }

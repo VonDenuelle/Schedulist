@@ -1,10 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Channel, LocalNotifications } from '@capacitor/local-notifications';
+import { Storage } from '@capacitor/storage';
 import { MenuController, ModalController } from '@ionic/angular';
 import * as moment from 'moment';
 import { ListModalComponent } from 'src/app/components/list-modal/list-modal.component';
+import { HomeScheduleService } from 'src/app/services/home-schedule.services';
 import { NotificationsService } from 'src/app/services/notifications.services';
+
+/* <KEYS> */
+const TIME_KEY = 'time';
+const DAY_KEY = 'day';
+const TITLE_KEY = 'title';
+const DESCRIPTION_KEY = 'description';
+const PRIORITY_KEY = 'priority';
+
 
 @Component({
   selector: 'app-home',
@@ -13,28 +23,56 @@ import { NotificationsService } from 'src/app/services/notifications.services';
 })
 export class HomePage implements OnInit {
 
+  /* VARIABLES */
   currentTime = moment().format('hh : mm : ss') // initialieze
   timeMeridiem
+
+  time
+  day
+  title
+  description
+  priority
+
   constructor(
     public menuCtrl: MenuController, 
     public notifications: NotificationsService, 
     private router: Router,
-    public modalController: ModalController
+    public modalController: ModalController,
+    public homeSchedule : HomeScheduleService
     ) { 
     this.refreshTime()
     this.notifications.setNotificationForToday()
-
   }
 
   async ngOnInit() {
     // Request Permmision
     // await LocalNotifications.checkPermissions()
     await LocalNotifications.requestPermissions();
-   
-    LocalNotifications.addListener('localNotificationActionPerformed', async (notif) => {
-      console.log(notif.notification.extra.title);
-      console.log("log");
-      
+
+     // updates storage
+     await LocalNotifications.addListener('localNotificationReceived' , 
+     async (notif) => {
+      this.homeSchedule.updateStorage(
+        moment(notif.extra.time, 'HH:mm:ss').format('hh:mm a'),
+        moment(notif.extra.day, 'ddd').format('dddd'),
+        notif.extra.title,
+        notif.extra.description,
+        notif.extra.priority == 0 ? "true" : 'false'
+    )
+
+
+      //resets value immediately
+      this.time = moment(notif.extra.time, 'HH:mm:ss').format('hh:mm a')
+      this.day =  moment(notif.extra.day, 'ddd').format('dddd'),
+      this.title = notif.extra.title
+      this.description = notif.extra.description
+      this.priority = notif.extra.priority == 0 ? "true" : 'false'
+     })
+
+
+
+    // when user clicked on notif, create modal
+    await LocalNotifications.addListener('localNotificationActionPerformed', async (notif) => {
       const modal = await this.modalController.create({
         component: ListModalComponent,
         componentProps: { 
@@ -49,6 +87,7 @@ export class HomePage implements OnInit {
       });
      await modal.present();
    })
+   
   }
   
   async basic(){
@@ -142,42 +181,67 @@ export class HomePage implements OnInit {
   console.log(await LocalNotifications.listChannels());
   
   }
-  advance(){
-  //  LocalNotifications.schedule({
-  //     notifications: [
-  //       {
-  //         sound : 'samsung_over_the_horizon.wav',
-  //         title : "Hello",
-  //         body : "Join the academfewy",
-  //         id : 9999,
-  //         extra: {
-  //           data : 'PAss data obj to handler'
-  //         },
-  //         smallIcon: "ic_stat_ssss",
-  //         iconColor: "#05575F",
-  //         ongoing : true,
-  //         autoCancel : false,
-  //         // channelId : 'hello',
-  //         schedule : {
-  //           allowWhileIdle : true,
-  //         }
-  //       }
-  //     ]
-  //   })
-    
+  async advance(){
+    console.log( await LocalNotifications.listChannels());
+   await LocalNotifications.removeAllListeners()
+  //  await LocalNotifications.deleteChannel({
+  //     id: '2',
+  //     name: "mychannel",
+  //     importance: 3,
+  //     sound : 'notify_before.wav'
+  //   }); // deletes all channels
+
+    console.log(await LocalNotifications.listChannels());
+    // let channel2 : Channel = {
+    //   id : 'NOTIFY_BEFORE',
+    //   importance : 3,
+    //   name : "mychannel",
+    //   visibility : 1,
+    //   vibration : true,
+    //   sound : 'notify_before.wav'
+    // };
+
+    // await LocalNotifications.createChannel(channel2)
+
+    await LocalNotifications.schedule({
+      notifications: [
+        {
+          title : "Helww",
+          body : "Join the academfewy",
+          id : 1235,
+          smallIcon: "ic_stat_ssss",
+          iconColor: "#05575F",
+          ongoing : true,
+          autoCancel : false,
+          channelId : 'NOTIFY_BEFORE',
+          schedule : {
+            allowWhileIdle : true,
+          }
+        }
+      ]
+    })
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
     this.menuCtrl.enable(true);  //enable sidemenu
+    console.log((await Storage.get({key : PRIORITY_KEY})).value, (await Storage.get({key : TIME_KEY})).value);
+    console.log(Storage.keys());
+    
+
+    this.time =  (await Storage.get({key : TIME_KEY})).value
+    this.day = (await Storage.get({key : DAY_KEY})).value
+    this.title = (await Storage.get({key : TITLE_KEY})).value
+    this.description = (await Storage.get({key : DESCRIPTION_KEY})).value
+    this.priority = (await Storage.get({key : PRIORITY_KEY})).value
    }
 
+
+   // real time clock 
    async refreshTime(){  
     let intervalVar = setInterval(function () {
       this.currentTime = moment().format('hh : mm : ss')
       this.timeMeridiem = moment(new Date).format('a')
     }.bind(this),1000)
-  
-    
-    
+   
    }
 }
