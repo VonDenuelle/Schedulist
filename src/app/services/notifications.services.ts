@@ -22,9 +22,21 @@ export class NotificationsService {
   }
   day = moment(new Date()).format('ddd');
   dayToEnum;
-  channelPriority = ''
+  channelSound = ''
 
   async setNotificationForToday() {
+    // (await LocalNotifications.listChannels()).channels.forEach(
+    //   async (element) => {
+    //     if(element.id != 'default'){  // do not delete default notif channel
+    //       await LocalNotifications.deleteChannel({
+    //         id: element.id,
+    //         name: element.name,
+    //         importance: element.importance,
+    //       }); // deletes all channels
+    //     }
+    //   }
+    // );
+
     const channelKey = await Storage.get({key : CHANNEL_KEY});
     if (channelKey.value == '' || channelKey.value == undefined) {
       console.log("Has to run once creating CHANNEL");
@@ -67,17 +79,7 @@ export class NotificationsService {
            *  delete existing channels to only hold alarms set for today
            *  then create channels for every response
            */
-          // (await LocalNotifications.listChannels()).channels.forEach(
-          //   async (element) => {
-          //     if(element.id != 'default'){  // do not delete default notif channel
-          //       await LocalNotifications.deleteChannel({
-          //         id: element.id,
-          //         name: element.name,
-          //         importance: element.importance,
-          //       }); // deletes all channels
-          //     }
-          //   }
-          // );
+
           await this.deleteNotification() // deletets pending notif to reset
 
  
@@ -107,7 +109,7 @@ export class NotificationsService {
                     id: res.notify_before + res.id ,
                     smallIcon: 'ic_stat_ssss',
                     iconColor: '#05575F',
-                    channelId: 'wav_notify_before',
+                    channelId: '3_wav_notify_before',
                     extra : {
                       id : res.id,
                       description : res.description,
@@ -116,7 +118,8 @@ export class NotificationsService {
                       vibrate : res.vibrate,
                       ringtone : res.ringtone,
                       time : res.time,
-                      day : res.day                      
+                      day : res.day,
+                      before : true                      
                     },
                     schedule: {
                       at: new Date(notifyBeforeDate),
@@ -130,9 +133,31 @@ export class NotificationsService {
 
  // ====================== EXACT TIME NOTIFICATION
               if (res.priority == 0) { // if high prio, set ringtoe to high_priority wav
-                this.channelPriority = 'wav_high_priority'
+                this.channelSound = '5_wav_high_priority'
               } else { // else none
-                this.channelPriority = 'wav_teruhashi'
+                console.log(res.ringtone);
+                
+                switch (res.ringtone) {
+                  case 'Samsung Over The Horizon':
+                    this.channelSound = '5_wav_samsung_over_the_horizon'
+                    break;
+                  case 'Samsung Morning Flower':
+                     this.channelSound = '5_wav_samsung_morning_flower'
+                    break;
+                  case 'Beat Ringtone':
+                     this.channelSound = '5_wav_beat'
+                    break;
+                  case 'Saiki':
+                     this.channelSound = '5_wav_saiki'
+                    break;
+                  case 'Teruhashi':
+                     this.channelSound = '5_wav_teruhashi'
+                    break;
+                  case 'Classic Alarm':
+                     this.channelSound = '5_wav_clasic_alarm_ringtone'
+                    break;
+                }
+               
               }
 
               // Sets up schedule based on created channel with same id as response
@@ -146,7 +171,7 @@ export class NotificationsService {
                     smallIcon: 'ic_stat_ssss',
                     iconColor: '#05575F',
                     ongoing: true,
-                    channelId: this.channelPriority,
+                    channelId: this.channelSound,
                     extra : {
                       id : res.id,
                       description : res.description,
@@ -155,7 +180,8 @@ export class NotificationsService {
                       vibrate : res.vibrate,
                       ringtone : res.ringtone,
                       time : res.time,
-                      day : res.day                      
+                      day : res.day,        
+                      before : false                  
                     },
                     schedule: {
                       at: new Date(myDate),
@@ -253,7 +279,7 @@ export class NotificationsService {
   async createAllChannels(){
     // Notify_before.wav ============
     await LocalNotifications.createChannel({
-      id: "wav_notify_before",
+      id: "3_wav_notify_before",
       importance: 3,
       name: 'wav notify before ringtone',
       visibility: 1,
@@ -263,8 +289,8 @@ export class NotificationsService {
 
     // samsung over the horizon .wav ============
     await LocalNotifications.createChannel({
-      id: "wav_samsung_over_the_horizon",
-      importance: 3,
+      id: "5_wav_samsung_over_the_horizon",
+      importance: 5,
       name: 'samsung over the horizon ringtone',
       visibility: 1,
       vibration: true,
@@ -273,18 +299,18 @@ export class NotificationsService {
 
     // classic alarm ringtone .wav ============
     await LocalNotifications.createChannel({
-      id: "wav_clasic_alarm_rington",
-      importance: 3,
+      id: "5_wav_clasic_alarm_ringtone",
+      importance: 5,
       name: 'classic alarm ringtont ringtone',
       visibility: 1,
       vibration: true,
-      sound: 'classic_alarm_ringtone.wav',
+      sound: 'classic_alarm_rigntone.wav',
     }); 
 
     // teruhashi .wav ============
     await LocalNotifications.createChannel({
-      id: "wav_teruhashi",
-      importance: 3,
+      id: "5_wav_teruhashi",
+      importance: 5,
       name: 'teruhashi ringtone',
       visibility: 1,
       vibration: true,
@@ -293,8 +319,8 @@ export class NotificationsService {
 
     // saiki op .wav ============
     await LocalNotifications.createChannel({
-      id: "wav_saiki",
-      importance: 3,
+      id: "5_wav_saiki",
+      importance: 5,
       name: 'saiki ringtone',
       visibility: 1,
       vibration: true,
@@ -304,8 +330,8 @@ export class NotificationsService {
 
     // cute beat ringtone .wav ============
     await LocalNotifications.createChannel({
-      id: "wav_beat",
-      importance: 3,
+      id: "5_wav_beat",
+      importance: 5,
       name: 'beat ringtone ringtone',
       visibility: 1,
       vibration: true,
@@ -314,8 +340,8 @@ export class NotificationsService {
 
     //samsung morning flower .wav ============
     await LocalNotifications.createChannel({
-      id: "wav_samsung_morning_flower",
-      importance: 3,
+      id: "5_wav_samsung_morning_flower",
+      importance: 5,
       name: 'samsung morning flower ringtone',
       visibility: 1,
       vibration: true,
@@ -324,8 +350,8 @@ export class NotificationsService {
 
     //high priority ringtone .wav ============
     await LocalNotifications.createChannel({
-      id: "wav_high_priority",
-      importance: 3,
+      id: "5_wav_high_priority",
+      importance: 5,
       name: 'high priority ringtone',
       visibility: 1,
       vibration: true,

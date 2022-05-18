@@ -72,7 +72,7 @@ export class AllSchedulesPage implements OnInit {
     return formattedString;
   }
 
-   getScheduleByDay(day) {
+   async getScheduleByDay(day) {
      this.temporaryScheduleHolder = []; // reset to none
      let abbr = day.substring(0, 3);
 
@@ -85,7 +85,7 @@ export class AllSchedulesPage implements OnInit {
 
       while (i < len) {
         if (  this.todaySchedules[i].day == abbr) {
-           this.temporaryScheduleHolder.push(this.todaySchedules[i]);
+          await this.temporaryScheduleHolder.push(this.todaySchedules[i]);
         }
         i++;
       }

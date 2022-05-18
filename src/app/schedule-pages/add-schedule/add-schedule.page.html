@@ -99,6 +99,35 @@
       <ion-checkbox [(ngModel)]="priority" slot="start"></ion-checkbox>
     </ion-item>
 
+    <!-- Ringtone Select -->
+    <div class="sound">
+      <ion-item  color="light" style="margin-top: 12px;">
+        <ion-label>Ringtone</ion-label>
+        <ion-select [(ngModel)]="ringtone"  (ionChange)="changeSound();" value="{{ringtone}}" interface="popover">
+          <ion-select-option value="Samsung Over The Horizon">Samsung Over The Horizon</ion-select-option>
+          <ion-select-option value="Samsung Morning Flower">Samsung Morning Flower</ion-select-option>
+          <ion-select-option value="Beat Ringtone">Beat Ringtone</ion-select-option>
+          <ion-select-option value="Saiki">Saiki</ion-select-option>
+          <ion-select-option value="Teruhashi">Teruhashi</ion-select-option>
+          <ion-select-option value="Classic Alarm">Classic Alarm</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      
+      <div class="buttons">
+        <ion-item style="--background: #FCC07A;" (click)="play()">
+          <ion-label>{{soundStatus}}</ion-label>
+          <ion-icon name="{{soundIcon}}"></ion-icon>
+        </ion-item>
+        <ion-item color="danger" (click)="stop()">
+          <ion-label>Stop</ion-label>
+          <ion-icon name="stop"></ion-icon>
+        </ion-item>
+      </div>
+    </div>
+    
+
+
 <!-- Buttons -->
   <div class="buttons-flex">
     <ion-button  class="delete">

@@ -5,15 +5,8 @@ import { Storage } from '@capacitor/storage';
 import { MenuController, ModalController } from '@ionic/angular';
 import * as moment from 'moment';
 import { ListModalComponent } from 'src/app/components/list-modal/list-modal.component';
-import { HomeScheduleService } from 'src/app/services/home-schedule.services';
+import { DAY_KEY, DESCRIPTION_KEY, HomeScheduleService, PRIORITY_KEY, TIME_KEY, TITLE_KEY } from 'src/app/services/home-schedule.services';
 import { NotificationsService } from 'src/app/services/notifications.services';
-
-/* <KEYS> */
-const TIME_KEY = 'time';
-const DAY_KEY = 'day';
-const TITLE_KEY = 'title';
-const DESCRIPTION_KEY = 'description';
-const PRIORITY_KEY = 'priority';
 
 
 @Component({
@@ -52,13 +45,18 @@ export class HomePage implements OnInit {
      // updates storage
      await LocalNotifications.addListener('localNotificationReceived' , 
      async (notif) => {
-      this.homeSchedule.updateStorage(
-        moment(notif.extra.time, 'HH:mm:ss').format('hh:mm a'),
-        moment(notif.extra.day, 'ddd').format('dddd'),
-        notif.extra.title,
-        notif.extra.description,
-        notif.extra.priority == 0 ? "true" : 'false'
-    )
+       // if the notification is a NOTIFY BEFORE, then don't change shown schedule in home
+       if (notif.extra.before == false) {
+        this.homeSchedule.updateStorage({
+          id : notif.extra.id as string,
+          time : moment(notif.extra.time, 'HH:mm:ss').format('hh:mm a'),
+          day : moment(notif.extra.day, 'ddd').format('dddd'),
+          title : notif.extra.title,
+          description : notif.extra.description,
+          priority : notif.extra.priority == 0 ? "true" : 'false'
+        })
+       }
+  
 
 
       //resets value immediately

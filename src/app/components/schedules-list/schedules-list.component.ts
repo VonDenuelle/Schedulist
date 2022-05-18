@@ -1,9 +1,11 @@
 import { Time } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { Storage } from '@capacitor/storage';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { SchedulesPage } from 'src/app/menu/schedules/schedules.page';
 import { AllSchedulesPage } from 'src/app/schedule-pages/all-schedules/all-schedules.page';
+import { HomeScheduleService, ID_KEY } from 'src/app/services/home-schedule.services';
 import { NotificationsService } from 'src/app/services/notifications.services';
 import { ScheduleService } from 'src/app/services/schedule.services';
 import { ListModalComponent } from '../list-modal/list-modal.component';
@@ -38,7 +40,8 @@ export class SchedulesListComponent implements OnInit {
     public toastController: ToastController,
     private schedules: SchedulesPage,  // call a function from schedules page, to remove an element without api calls
     private allSchedules: AllSchedulesPage,
-    public notifications : NotificationsService
+    public notifications : NotificationsService,
+    public homeSchedule : HomeScheduleService
    ) {  }
 
   ngOnInit() {
@@ -58,7 +61,8 @@ export class SchedulesListComponent implements OnInit {
     this.schedule.deleteSchedule(id)
       .subscribe(
         async (response : any) =>{
-
+          console.log(id, (await Storage.get({key : ID_KEY})).value);
+          
           /**
            * call function from schedules page to delete the list immediately
            * without making additional api calls
@@ -67,14 +71,31 @@ export class SchedulesListComponent implements OnInit {
            * should be called
            *  */ 
            if (this.router.url == '/schedules/all-schedules') {
-            console.log('all');
             await this.allSchedules.deleteFromList(index, id)  
             await this.notifications.setNotificationForToday() // recall notifications 
+
+            //if shown schedule in home is the deleted schedule, then remove
+            if ( (await Storage.get({key : ID_KEY})).value == id ) {
+              this.homeSchedule.updateStorage({
+                time: 'Deleted',
+                title: "Schedule has been deleted",
+                description: "Previously shown schedule has been deleted. Wait for your next schedule notification"
+              })
+            }
             await loading.dismiss();
+
           } else {
-            console.log('sched');
             await this.schedules.deleteFromList(index)  
             await this.notifications.setNotificationForToday() // recall notifications 
+
+            //if shown schedule in home is the deleted schedule, then remove
+            if ( (await Storage.get({key : ID_KEY})).value == id ) {
+              this.homeSchedule.updateStorage({
+                time: 'Deleted',
+                title: "Schedule has been deleted",
+                description: "Previously shown schedule has been deleted. Wait for your next schedule notification"
+              })
+            }
             await loading.dismiss();
           }
       
@@ -88,9 +109,7 @@ export class SchedulesListComponent implements OnInit {
   }
 
   taskChange(id, event){
-    console.log(event.detail.checked);
-    console.log(id);
-    
+
     this.schedule.updateToggleStatus(id, event.detail.checked)
       .subscribe(
         async (response : any) =>{

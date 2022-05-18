@@ -95,9 +95,33 @@ ion-datetime{
   }  
 }
 
+
 .notification.item-has-focus {
   --highlight-background:#FCC07A;
 }
+
+//Sound
+.sound {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    ion-item{
+      width: 90%;
+      margin: auto;
+    }
+    .buttons{
+      width: 90%;
+      margin: auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      ion-item{
+        flex-grow: 1;
+      }
+    }
+} 
 
 // Input Fields
 ion-card.inputs {
