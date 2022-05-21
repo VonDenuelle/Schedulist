@@ -4,11 +4,22 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Home</ion-title>
+
+    <ion-buttons slot="primary">
+      <ion-button (click)="info()">
+        <ion-icon style="font-size: 24px;" name="information-circle"></ion-icon>
+      </ion-button>
+
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content >
+    </ion-refresher-content>
+  </ion-refresher>
 
   <ion-grid fixed>
     <ion-row>
@@ -19,22 +30,24 @@
         <ion-button (click)="advance()" expand="block" fill="clear" shape="round">
           advabce
         </ion-button> -->
-        <ion-label>Cloudy</ion-label>
+        <ion-label>{{cloud}}</ion-label>
       </ion-col>
       <ion-col size="4">
-        <ion-label>24°C</ion-label>
+        <ion-label>{{temperature}}</ion-label>
       </ion-col>
       <ion-col class="location" size="4">
         <ion-label>
           <ion-icon name="location-sharp"></ion-icon>
-          Olongapo City
+          {{city}}
         </ion-label>
       </ion-col>
     </ion-row>
 
     <ion-row>
       <ion-col class="weather" size="12">
-        <fa-icon icon="cloud"></fa-icon><a href=""></a>
+        <ion-thumbnail >
+          <ion-img src="{{icon}}"></ion-img>
+        </ion-thumbnail>
         <div class="glow-icon"></div>
       </ion-col>
     </ion-row>

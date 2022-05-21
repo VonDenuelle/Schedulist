@@ -64,7 +64,6 @@ export class AuthenticationService {
       })
     )
   }
-
 /**
  * REGISTER
  */

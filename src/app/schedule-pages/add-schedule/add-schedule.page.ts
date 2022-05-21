@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -5,8 +6,10 @@ import { NativeAudio } from '@capacitor-community/native-audio';
 import { Storage } from '@capacitor/storage';
 import {
   IonDatetime,
+  IonRouterOutlet,
   LoadingController,
   MenuController,
+  Platform,
   ToastController,
 } from '@ionic/angular';
 import * as moment from 'moment';
@@ -30,15 +33,37 @@ export class AddSchedulePage implements OnInit {
     public toastController: ToastController,
     private loadingController: LoadingController,
     private route: ActivatedRoute,
-    public notifications: NotificationsService,
-    public homeSchedule: HomeScheduleService
-  ) { }
+    private notifications: NotificationsService,
+    public homeSchedule: HomeScheduleService,
+    private platform: Platform,
+    private _location: Location
+  ) { 
+     // if back button is pressed, then stop what music is playing
+     this.platform.backButton.subscribeWithPriority(10, () => {
+      console.log('Handler was called!');
+      this.stop()
+        if (this._location.isCurrentPathEqualTo('/home'))
+        {
+          navigator['app'].exitApp();
+        } 
+        else
+        {
+          this._location.back();
+        }
+      
+    });
 
-  ngOnInit() {
+
+    Storage.get({ key: 'sound' }).then(res => {
+      if (res.value == '' ||  res.value == undefined ||res.value == null || res.value != 'true'){
+          this.preloadSounds()
+      }     
+  });
+
+  }
+
+  async ngOnInit() {
     this.form = new AddScheduleForm(this.formBuilder).createForm();
-    if (this.soundPreloadedStatus == false) {
-      this.preloadSounds()
-    }
   }
 
   ionViewWillEnter() {
@@ -145,8 +170,8 @@ export class AddSchedulePage implements OnInit {
   // Notify Before
   notifyOptions() {
     console.log(this.notify);
-
   }
+  
   // Time Formatting
   formatDate(time) {
     this.checkDayToggleStatus();
@@ -161,6 +186,18 @@ export class AddSchedulePage implements OnInit {
 
   // Day Toggles
   toggleDay(day) {
+   /**
+   *  if it is an update, then user can only select one
+   */
+    if (this.update_flag == true) {
+      // resets all day toggle to false 
+      this.days.forEach(day => {
+        day.toggle = false
+        day.badge = false
+      });
+    }
+    
+    //sets selected toggle to true
     day.toggle == false ? (day.toggle = true) : (day.toggle = false);
     this.checkDayToggleStatus();
 
@@ -259,11 +296,18 @@ export class AddSchedulePage implements OnInit {
         }
       }
     } else { // if it is an update
-      console.log(this.taskStatus, this.vibrateStatus);
+      //get the day toggled
+      let day 
+      this.days.forEach(element => {
+        if (element.toggle == true) {
+          day = element.day
+        }
+      });
 
       this.schedule
         .updateSchedule(
           this.schedule_id,
+          day,
           moment(this.dateValue2, 'hh:mm A').format('HH:mm:ss'),
           this.form.get('title').value,
           this.form.get('description').value,
@@ -321,7 +365,7 @@ export class AddSchedulePage implements OnInit {
   }
 
 
-  //Check if there is still conflicts
+  //Check if there is still conflicts then disable save button
   checkForConflictsOnSchedule() {
     this.disableSaveButtonIfConflictExist = false // reset
     this.days.forEach(element => {
@@ -362,7 +406,7 @@ export class AddSchedulePage implements OnInit {
 
 
 // ==================================
-
+ 
   /**
    *  When selected new sound, stop current playing sound
    */
@@ -407,8 +451,8 @@ export class AddSchedulePage implements OnInit {
   /**
    *  Preload sounds for preview
    */
-  preloadSounds(){
-    this.soundPreloadedStatus = true
+  async preloadSounds(){
+    await Storage.set({key : 'sound' , value : "true"})
     NativeAudio.preload({
       assetId: "classic",
       assetPath: "classic_alarm_ringtone.mp3",

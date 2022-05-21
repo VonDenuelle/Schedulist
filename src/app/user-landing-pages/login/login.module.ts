@@ -8,6 +8,7 @@ import { LoginPageRoutingModule } from './login-routing.module';
 
 import { LoginPage } from './login.page';
 import { ErrorMessageComponentModule } from 'src/app/components/error-message.module';
+import { ShowHidePasswordModule } from 'src/app/components/show-hide-password.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { ErrorMessageComponentModule } from 'src/app/components/error-message.mo
     IonicModule,
     LoginPageRoutingModule,
     ReactiveFormsModule,
-    ErrorMessageComponentModule
+    ErrorMessageComponentModule,
+    ShowHidePasswordModule
     
   ],
   declarations: [LoginPage]

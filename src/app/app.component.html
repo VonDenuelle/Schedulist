@@ -6,7 +6,18 @@
           <ion-list-header>
 
             <div class="avatar-header">
-              <ion-icon class="avatar" name="person-circle"></ion-icon>
+              <div class="profile">
+          
+                <ion-thumbnail >
+                  <ion-img src="{{imageUrl}}"></ion-img>
+                </ion-thumbnail>
+
+                <ion-button  color="dark" class="edit" (click)="picture()" expand="block" fill="clear" shape="round">
+                  <ion-icon name="create-outline"></ion-icon>
+                </ion-button>
+
+              </div>
+              
               <div class="avatar-text">
                 <p class="name" *ngIf="users.decodedToken.name != undefined">{{users.decodedToken.name}}</p>
                 <p>{{users.decodedToken.email}}</p>
@@ -23,7 +34,7 @@
             </ion-item>
           </ion-menu-toggle>
 
-          <ion-button (click)="logout()">
+          <ion-button (click)="logout()" class="logout">
             <ion-icon slot="start" name="log-out"></ion-icon>
             Log out
           </ion-button>

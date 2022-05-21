@@ -10,6 +10,7 @@ import { NotificationsService } from 'src/app/services/notifications.services';
 import { ScheduleService } from 'src/app/services/schedule.services';
 import { ListModalComponent } from '../list-modal/list-modal.component';
 
+export const DELETE_KEY = 'delete'
 @Component({
   selector: 'app-schedules-list',
   templateUrl: './schedules-list.component.html',
@@ -29,6 +30,7 @@ export class SchedulesListComponent implements OnInit {
   @Input() id 
   
   @Input() index
+  @Input() dayIndex
 
 
   taskStatus : any
@@ -40,7 +42,7 @@ export class SchedulesListComponent implements OnInit {
     public toastController: ToastController,
     private schedules: SchedulesPage,  // call a function from schedules page, to remove an element without api calls
     private allSchedules: AllSchedulesPage,
-    public notifications : NotificationsService,
+    private notifications : NotificationsService,
     public homeSchedule : HomeScheduleService
    ) {  }
 
@@ -54,15 +56,14 @@ export class SchedulesListComponent implements OnInit {
     this.router.navigateByUrl('schedules/add-schedule?id='+id)
   }
 
-  async delete(id, index){
+  async delete(dayIndex, id, index){
     const loading = await this.loadingController.create();
     await loading.present();
 
     this.schedule.deleteSchedule(id)
       .subscribe(
         async (response : any) =>{
-          console.log(id, (await Storage.get({key : ID_KEY})).value);
-          
+       
           /**
            * call function from schedules page to delete the list immediately
            * without making additional api calls
@@ -71,11 +72,12 @@ export class SchedulesListComponent implements OnInit {
            * should be called
            *  */ 
            if (this.router.url == '/schedules/all-schedules') {
-            await this.allSchedules.deleteFromList(index, id)  
-            await this.notifications.setNotificationForToday() // recall notifications 
+            await this.allSchedules.deleteFromList(dayIndex ,index, id)  
+             this.notifications.setNotificationForToday() // recall notifications 
 
             //if shown schedule in home is the deleted schedule, then remove
             if ( (await Storage.get({key : ID_KEY})).value == id ) {
+     
               this.homeSchedule.updateStorage({
                 time: 'Deleted',
                 title: "Schedule has been deleted",
@@ -86,10 +88,11 @@ export class SchedulesListComponent implements OnInit {
 
           } else {
             await this.schedules.deleteFromList(index)  
-            await this.notifications.setNotificationForToday() // recall notifications 
+             this.notifications.setNotificationForToday() // recall notifications 
 
             //if shown schedule in home is the deleted schedule, then remove
             if ( (await Storage.get({key : ID_KEY})).value == id ) {
+          
               this.homeSchedule.updateStorage({
                 time: 'Deleted',
                 title: "Schedule has been deleted",
@@ -108,13 +111,13 @@ export class SchedulesListComponent implements OnInit {
 
   }
 
-  taskChange(id, event){
-
-    this.schedule.updateToggleStatus(id, event.detail.checked)
+  taskChange(id){
+    
+    this.schedule.updateToggleStatus(id, this.taskStatus == true ? 0 : 1)
       .subscribe(
         async (response : any) =>{
-          console.log(response);
-          await this.notifications.setNotificationForToday() // recall notifications since toggle has been changed
+
+           this.notifications.setNotificationForToday() // recall notifications since toggle has been changed
         },
         async (error) => {
           console.log(error);
@@ -133,7 +136,6 @@ export class SchedulesListComponent implements OnInit {
 
   // present Modal
   async presentModal(title, description, priority, vibrate, ringtone, time, day) {
-    console.log(title);
     
     const modal = await this.modalController.create({
       component: ListModalComponent,
@@ -142,7 +144,7 @@ export class SchedulesListComponent implements OnInit {
         'description' : description,
         'priority' : priority == 0? true : false,
         'vibrate' : vibrate  == 0 ? true : false,
-        'ringtone' : ringtone  == 0 ? true : false,
+        'ringtone' : ringtone,
         'time' : time,
         'day' : day,
       }

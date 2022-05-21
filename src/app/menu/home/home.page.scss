@@ -26,20 +26,25 @@ ion-grid {
     display: flex;
     justify-content: center;
 
-    .glow-icon {
-      z-index: 10;
-      position: absolute;
-      display: block;
-      top: 50%;
-      left: 50%;
-      box-shadow:
-        0 0 30px 12px #05575F,
-        /* inner white */
-        0 0 44px 18px #9CC1C5,
-        /* middle magenta */
-        0 0 54px 28px #fff;
-      /* outer cyan */
+
+    ion-thumbnail{
+     
+      --size : 64px
     }
+    // .glow-icon {
+    //   z-index: 10;
+    //   position: absolute;
+    //   display: block;
+    //   top: 50%;
+    //   left: 50%;
+    //   box-shadow:
+    //     0 0 30px 12px #05575F,
+    //     /* inner white */
+    //     0 0 44px 18px #9CC1C5,
+    //     /* middle magenta */
+    //     0 0 54px 28px #fff;
+    //   /* outer cyan */
+    // }
 
     fa-icon {
       z-index: 20;

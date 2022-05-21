@@ -31,8 +31,11 @@
       <div class="input-container">
         <ion-label>Password </ion-label>
         <ion-item>
-          <ion-input clearInput="true" formControlName="password" type="password" placeholder="Enter your password">
-          </ion-input>
+          <app-show-hide-password>
+            <ion-input clearInput="true" formControlName="password" type="password" placeholder="Enter your password">
+            </ion-input>
+          </app-show-hide-password>
+         
         </ion-item>
 
         <app-error-message [field]="$any(form.get('password'))" error="required" message="Password is empty">

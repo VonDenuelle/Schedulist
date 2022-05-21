@@ -4,13 +4,13 @@
     <ion-item class="item-wrap" lines="none"  detail="true" slot="start" >
       <ion-item  lines="none" (click)="presentModal(title,description, priority, vibrate, ringtone, time, day)"  class="time-input-wrapper">
         <ion-label>
-          <h1>{{time}}</h1>
-          <p>{{title}}</p>
+          <h1>{{title}}</h1>
+          <p>{{time}}</p>
   
         </ion-label>
       </ion-item>
       
-      <ion-toggle  [(ngModel)]="taskStatus" (ionChange)="taskChange(id, $event)" slot="end"></ion-toggle>
+      <ion-toggle  [(ngModel)]="taskStatus" (click)="taskChange(id)" slot="end"></ion-toggle>
 
     </ion-item>
 
@@ -21,7 +21,7 @@
         <ion-icon slot="icon-only" name="pencil"></ion-icon>
       </ion-item-option>
       <!-- DELETE -->
-      <ion-item-option color="danger" (click)="delete(id, index)">
+      <ion-item-option color="danger" (click)="delete(dayIndex, id, index)">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
       </ion-item-option>
     </ion-item-options>

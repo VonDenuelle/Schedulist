@@ -20,8 +20,9 @@
       </ion-item>
       <ion-list slot="content">
         <app-schedules-list 
-          *ngFor="let res of temporaryScheduleHolder;let indexOfelement=index; trackBy:trackById" 
+          *ngFor="let res of temporaryScheduleHolder[dayIndex].result ;let indexOfelement=index; trackBy:trackById" 
           index={{indexOfelement}}
+          dayIndex = {{dayIndex}}
           toggle={{res.toggle}} 
           id={{res.id}} 
           title={{res.title}} 

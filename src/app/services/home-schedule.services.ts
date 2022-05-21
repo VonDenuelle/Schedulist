@@ -18,11 +18,7 @@ export const ID_KEY = 'id';
 /* For Updating and Displaying which schedule should show in home */
 export class HomeScheduleService {
     constructor(public schedule : ScheduleService){
-        Storage.get({ key: ID_KEY }).then(res => {
-            if (res.value == '' ||  res.value == undefined ||res.value == null){
-                this.updateStorage({})
-            }     
-        });
+
     }
     
     /* Function for retaining schedule even on close, sets on storage 

@@ -1,6 +1,6 @@
 <ion-header class="ion-no-border" [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <ion-buttons slot="start" (click)="stop()">
       <ion-back-button defaultHref="home"></ion-back-button>
     </ion-buttons>
     <ion-title>Add Schedule</ion-title>
@@ -54,7 +54,7 @@
         <ion-col *ngFor="let day of days">
           <ion-button (click)="toggleDay(day)"
           [ngClass]="{'datebuttonActive' : day.toggle == true}"
-          [disabled]="update_flag == true ? true : false"
+       
            class="datebutton">
            {{day.day}}
 
@@ -103,7 +103,7 @@
     <div class="sound">
       <ion-item  color="light" style="margin-top: 12px;">
         <ion-label>Ringtone</ion-label>
-        <ion-select [(ngModel)]="ringtone"  (ionChange)="changeSound();" value="{{ringtone}}" interface="popover">
+        <ion-select disabled="{{priority == true}}" [(ngModel)]="ringtone"  (ionChange)="changeSound();" value="{{ringtone}}" interface="popover">
           <ion-select-option value="Samsung Over The Horizon">Samsung Over The Horizon</ion-select-option>
           <ion-select-option value="Samsung Morning Flower">Samsung Morning Flower</ion-select-option>
           <ion-select-option value="Beat Ringtone">Beat Ringtone</ion-select-option>
@@ -115,11 +115,11 @@
 
       
       <div class="buttons">
-        <ion-item style="--background: #FCC07A;" (click)="play()">
+        <ion-item  disabled="{{priority == true}}" style="--background: #FCC07A;" (click)="play()">
           <ion-label>{{soundStatus}}</ion-label>
           <ion-icon name="{{soundIcon}}"></ion-icon>
         </ion-item>
-        <ion-item color="danger" (click)="stop()">
+        <ion-item   disabled="{{priority == true}}" color="danger" (click)="stop()">
           <ion-label>Stop</ion-label>
           <ion-icon name="stop"></ion-icon>
         </ion-item>

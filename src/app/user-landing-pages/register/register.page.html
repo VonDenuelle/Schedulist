@@ -40,8 +40,11 @@
       <div class="input-container">
         <ion-label>Password </ion-label>
         <ion-item>
-          <ion-input clearInput="true" formControlName="password" type="password" placeholder="Enter your password">
-          </ion-input>
+          <app-show-hide-password>
+            <ion-input clearInput="true" formControlName="password" type="password" placeholder="Enter your password">
+            </ion-input>
+          </app-show-hide-password>
+       
         </ion-item>
 
         <app-error-message [field]="$any(form.get('password'))" error="required" message="Password is empty"> </app-error-message>
@@ -51,8 +54,11 @@
       <div class="input-container">
         <ion-label>Password </ion-label>
         <ion-item>
-          <ion-input clearInput="true" formControlName="password_confirmation" type="password" placeholder="Retype your password">
-          </ion-input>
+          <app-show-hide-password>
+            <ion-input clearInput="true" formControlName="password_confirmation" type="password" placeholder="Retype your password">
+            </ion-input>
+          </app-show-hide-password>
+         
         </ion-item>
         <app-error-message [field]="$any(form.get('password_confirmation'))" error="required" message="Password is empty"> </app-error-message>
         <app-error-message [field]="$any(form.get('password_confirmation'))" error="isntMatching" message="Password do not match"> </app-error-message>

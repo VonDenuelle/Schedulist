@@ -67,9 +67,10 @@ export class ScheduleService {
   /**
    *  Updating Schedules
    */
-  updateSchedule(id, time, title, description, vibrate, toggle, notify, priority, ringtone){
+  updateSchedule(id,day, time, title, description, vibrate, toggle, notify, priority, ringtone){
     let json = {
       'id' : id,
+      'day' : day,
       'time' : time,
       'title' : title,
       'description' : description,

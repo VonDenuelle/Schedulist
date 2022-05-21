@@ -1,5 +1,5 @@
 import { Component, IterableDiffers, OnInit, ViewChild } from '@angular/core';
-import { IonAccordionGroup, MenuController } from '@ionic/angular';
+import { IonAccordionGroup, LoadingController, MenuController } from '@ionic/angular';
 import * as moment from 'moment';
 import { ScheduleService } from 'src/app/services/schedule.services';
 import { UserService } from 'src/app/services/users.services';
@@ -17,32 +17,63 @@ export class AllSchedulesPage implements OnInit {
     public menuCtrl: MenuController,
     private schedule: ScheduleService,
     public users: UserService,
-
+    private loadingController: LoadingController
   ) { }
 
   ngOnInit() {
     
-    //preload all schedules
+  }
+
+
+  async ionViewWillEnter() {
+    this.menuCtrl.enable(false); //disable sidemenu
+    this.temporaryScheduleHolder = [
+      {day : 'Mon' , result : []},
+      {day : 'Tue' , result : []},
+      {day : 'Wed' , result : []},
+      {day : 'Thu' , result : []},
+      {day : 'Fri' , result : []},
+      {day : 'Sat' , result : []},
+      {day : 'Sun' , result : []},
+    ]; // reset to none
+
+    const loading = await this.loadingController.create();
+    await loading.present();   
+    //preload all schedules by day
     this.schedule.allSchedules(this.users.decodedToken.id).subscribe(
       async (response: any) => {
         if (response.response != undefined) {
+          
           this.todaySchedules = response.response;
+          
+         /**
+          *  seggregate schedules depending on day
+          */
+          let i = 0, len = this.todaySchedules.length; // caching length
+    
+          while (i < len) { // loop all schedules
+ 
+            this.temporaryScheduleHolder.forEach(element => { // if day is == with day from all schedules, then push
+
+              if ( this.todaySchedules[i].day == element.day) {   
+
+                this.getScheduleByDay(moment(element.day, 'ddd').format('dddd'))     
+                 this.temporaryScheduleHolder[this.dayIndex].result.push(this.todaySchedules[i])
+      
+              }
+            });
+            i++;
+          }
+          console.log(this.temporaryScheduleHolder);
+
         }
-       
+        
+       await loading.dismiss();
       },
       async (error) => {
         console.log(error);
       }
     );
-
-  
-  }
-
-
-  ionViewWillEnter() {
-    this.menuCtrl.enable(false); //disable sidemenu
-
-  
   }
 
   /**
@@ -60,8 +91,17 @@ export class AllSchedulesPage implements OnInit {
 
   // Arrays for responses
   todaySchedules : any[]
-  temporaryScheduleHolder : any[]
- 
+  temporaryScheduleHolder  = [
+    {day : 'Mon' , result : []},
+    {day : 'Tue' , result : []},
+    {day : 'Wed' , result : []},
+    {day : 'Thu' , result : []},
+    {day : 'Fri' , result : []},
+    {day : 'Sat' , result : []},
+    {day : 'Sun' , result : []},
+  ]
+ dayIndex = 1
+
   /**
    *  =========== Functions
    */
@@ -72,23 +112,29 @@ export class AllSchedulesPage implements OnInit {
     return formattedString;
   }
 
-   async getScheduleByDay(day) {
-     this.temporaryScheduleHolder = []; // reset to none
-     let abbr = day.substring(0, 3);
-
-    /**
-     * If the clicked accordion value(the day), is same with the day from the
-     * response, then put that object to temporary array
-     */
-    if (this.todaySchedules != undefined) { // if there is no schedules yet
-      let i = 0, len = this.todaySchedules.length; // caching length
-
-      while (i < len) {
-        if (  this.todaySchedules[i].day == abbr) {
-          await this.temporaryScheduleHolder.push(this.todaySchedules[i]);
-        }
-        i++;
-      }
+  async getScheduleByDay(day) {
+    switch (day) {
+      case 'Monday':
+        this.dayIndex = 0
+        break;
+      case 'Tuesday':
+        this.dayIndex = 1
+        break;
+      case 'Wednesday':
+        this.dayIndex = 2
+        break;
+      case 'Thursday':
+        this.dayIndex = 3
+        break;
+      case 'Friday':
+        this.dayIndex = 4
+        break;
+      case 'Saturday':
+        this.dayIndex = 5
+        break;
+      case 'Sunday':
+        this.dayIndex = 6
+        break; 
     }
   }
 
@@ -97,11 +143,11 @@ export class AllSchedulesPage implements OnInit {
    *  by tracking if schedule.id changes. it its the same than before 
    *  then dont recreate it 
    */
-  trackById(index, schedule){
-    return schedule.id;
+   trackById(index, schedule){
+    return index;
   }
   
-  deleteFromList(index, id){
+  deleteFromList(dayIndex, index, id){
     /**
      *  First, Remove the element based on index clicked from temporaryScheduleHolder array 
      *  ( different index ) as it changes based on day 
@@ -114,7 +160,7 @@ export class AllSchedulesPage implements OnInit {
      *  this causes to completely REMOVE IT FROM BOTH ARRAYS without having any issues
      *  of reloading the unupdated list 
      */
-    this.temporaryScheduleHolder.splice(index, 1)  // remove on position, how many  
+    this.temporaryScheduleHolder[dayIndex].result.splice(index, 1)  // remove on position, how many  
 
     for (let i = 0; i < this.todaySchedules.length; i++) {
       if (this.todaySchedules[i].id == id) {
