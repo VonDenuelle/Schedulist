@@ -5,6 +5,7 @@ import { Storage } from '@capacitor/storage';
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import { map,tap,switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { NotificationsService } from './notifications.services';
 import { UserService } from './users.services';
 
 const TOKEY_KEY = 'my-token';
@@ -20,7 +21,7 @@ export class AuthenticationService {
   token = '';
   decodedToken
 
-  constructor(private http: HttpClient, public users: UserService) {
+  constructor(private http: HttpClient, public users: UserService, private notificationService : NotificationsService) {
     this.loadToken()
    }
 
@@ -80,17 +81,21 @@ export class AuthenticationService {
     )
   }
 
-  logout(){
-    this.isAuthenticated.next(false);
+ async logout(){
+
     
-    Storage.keys().then( key => {
-      key.keys.forEach(element => {
+   await Storage.keys().then( key => {
+      key.keys.forEach(async (element) => {
         console.log(element);
         if (element != 'channels-status') { // do not remove notification channel on logout 
-          Storage.remove({key : element})
+         await Storage.remove({key : element})
         }
       });
     })
+    //delete more pending notification
+  await  this.notificationService.deleteNotification()
+
+  this.isAuthenticated.next(false);
    }
 
 

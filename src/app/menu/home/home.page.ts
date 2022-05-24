@@ -8,10 +8,12 @@ import { Channel, LocalNotifications } from '@capacitor/local-notifications';
 import { Storage } from '@capacitor/storage';
 import { AlertController, MenuController, ModalController } from '@ionic/angular';
 import * as moment from 'moment';
+import { IMAGE_KEY } from 'src/app/app.component';
 import { ListModalComponent } from 'src/app/components/list-modal/list-modal.component';
 
 import { DAY_KEY, DESCRIPTION_KEY, HomeScheduleService, ID_KEY, PRIORITY_KEY, TIME_KEY, TITLE_KEY } from 'src/app/services/home-schedule.services';
 import { NotificationsService } from 'src/app/services/notifications.services';
+import { ScheduleService } from 'src/app/services/schedule.services';
 import { WeatherService } from 'src/app/services/weather.services';
 
 
@@ -34,10 +36,13 @@ export class HomePage implements OnInit {
 
 
   // Weather
-  cloud
-  temperature
-  city
-  icon
+  cloud =''
+  temperature = ''
+  city =''
+  icon =''
+
+ 
+  todaySchedulesHighPrio
 
   constructor(
     public menuCtrl: MenuController,
@@ -46,61 +51,38 @@ export class HomePage implements OnInit {
     public modalController: ModalController,
     public homeSchedule: HomeScheduleService,
     public alertController: AlertController,
-    public weather: WeatherService
+    public weather: WeatherService,
+    private schedule : ScheduleService
   ) {
     this.refreshTime()
-    this.notifications.setNotificationForToday()
+      //check if there is value if none then default
+     Storage.get({ key: ID_KEY }).then(res => {
+        if (res.value == null){
+            console.log("storage");
+            
+            this.homeSchedule.updateStorage({})
+            //set local for immediate response
+            this.time = 'Waiting', 
+            this.day = '',
+            this.title = 'No schedule yet', 
+            this.description = 'Wait for the next notification of your schedule or create one if you don\x27t have one yet', 
+            this.priority = 'false'
+        }     
+    });
+
+    
   }
 
   async ngOnInit() {
-   await Storage.get({ key: ID_KEY }).then(res => {
-      console.log(res);
-      
-      if (res.value == null){
-          console.log("storage");
-          
-          this.homeSchedule.updateStorage({})
-      }     
-  });
-   
 
     // Request Permmision
     // Local Notifications
     await LocalNotifications.checkPermissions()
     await LocalNotifications.requestPermissions();
 
-    this.temperature = 'Allow location permission' // set defaults
-    this.city = "none"
-    this.cloud = "none"
-    this.icon = "https://cdn-icons-png.flaticon.com/512/252/252035.png"
-
     // Location
     await Geolocation.requestPermissions();
-    await Geolocation.checkPermissions().then(permission => {
-      console.log(permission);
-      
-      if (permission.coarseLocation == 'denied' || permission.location == 'denied') {
-        // this.presentAlert('settings', 'Localtion Permission', 'Please allow location permission of this appliction from your phone settings to continue using weather', "application_details")
-        this.temperature = 'Allow location permission'
-        this.city = "none"
-        this.cloud = "none"
-        this.icon = "https://cdn-icons-png.flaticon.com/512/252/252035.png"
-      } else {
-            // weather still has value  availabes
-            if(this.weather.temperature != ''){
-              console.log("Yes");
-              
-                //set local variables
-                this.city = this.weather.city
-                this.cloud = this.weather.cloud
-                this.temperature = this.weather.temperature
-                this.icon = this.weather.icon
-            } else {
-              this.getWeatherAPI()
-             }
-      }
-    })
-
+   
 
     // remove all listeners first
     await LocalNotifications.removeAllListeners()
@@ -112,7 +94,7 @@ export class HomePage implements OnInit {
         // if the notification is a NOTIFY BEFORE, then don't change shown schedule in home
         if (notif.extra.before == false) {
           this.homeSchedule.updateStorage({
-            id: notif.extra.id as string,
+            id: notif.extra.id.toString(),
             time: moment(notif.extra.time, 'HH:mm:ss').format('hh:mm a'),
             day: moment(notif.extra.day, 'ddd').format('dddd'),
             title: notif.extra.title,
@@ -133,24 +115,22 @@ export class HomePage implements OnInit {
 
     // when user clicked on notif, create modal
     await LocalNotifications.addListener('localNotificationActionPerformed', async (notif) => {
-
-      const modal = await this.modalController.create({
-        component: ListModalComponent,
-        componentProps: {
-          'title': notif.notification.extra.title,
-          'description': notif.notification.extra.description,
-          'priority': notif.notification.extra.priority == 0 ? true : false,
-          'vibrate': notif.notification.extra.vibrate == 0 ? true : false,
-          'ringtone': notif.notification.extra.ringtone == 0 ? true : false,
-          'time': moment(notif.notification.extra.time, 'HH:mm:ss').format('hh:mm a'),
-          'day': notif.notification.extra.day,
-        }
-      });
-      await modal.present();
+      this.presentModal(
+        notif.notification.extra.title,
+        notif.notification.extra.description,
+        notif.notification.extra.priority == 0 ? true : false,
+        notif.notification.extra.vibrate == 0 ? true : false,
+        notif.notification.extra.ringtone,
+        moment(notif.notification.extra.time, 'HH:mm:ss').format('hh:mm a'),
+        notif.notification.extra.day,
+        )
     })
 
   }
-
+  
+  /**
+   * BASIC AND ADVANCE FUNCTIONS ARE FOR TESTING PURPOSES
+   */
   async basic() {
 
 
@@ -286,14 +266,45 @@ export class HomePage implements OnInit {
   async ionViewWillEnter() {
     this.menuCtrl.enable(true);  //enable sidemenu
 
+    await Geolocation.checkPermissions().then(permission => {
 
+      if (permission.coarseLocation == 'denied' || permission.location == 'denied') {
+        // this.presentAlert('settings', 'Localtion Permission', 'Please allow location permission of this appliction from your phone settings to continue using weather', "application_details")
+        this.temperature = 'Allow location permission'
+        this.city = "none"
+        this.cloud = "none"
+        this.icon = "https://cdn-icons-png.flaticon.com/512/252/252035.png"
+      } else {
+            // weather still has value  availabes
+            if(this.weather.temperature != ''){
+              console.log("Yes");
+                console.log( this.weather.temperature);
+                
+                //set local variables
+                this.city = this.weather.city
+                this.cloud = this.weather.cloud
+                this.temperature = this.weather.temperature
+                console.log(this.temperature);
+                
+                this.icon = this.weather.icon
+            } else if (this.temperature == '') {
+                this.getWeatherAPI()
+             }
+      }
+    })
+
+
+    await this.notifications.setNotificationForToday() // to check 
+    this.todaySchedulesHighPrio = this.notifications.todayScheduleHighPrio
+    
+    //set local var
     this.time = (await Storage.get({ key: TIME_KEY })).value
     this.day = (await Storage.get({ key: DAY_KEY })).value
     this.title = (await Storage.get({ key: TITLE_KEY })).value
     this.description = (await Storage.get({ key: DESCRIPTION_KEY })).value
     this.priority = (await Storage.get({ key: PRIORITY_KEY })).value
 
-
+    // get current time with this structure
     let currentTime = new Date(
       new Date().getFullYear(),
       new Date().getMonth(),
@@ -303,8 +314,9 @@ export class HomePage implements OnInit {
       new Date().getSeconds()
     )
 
+    
     if (this.notifications.todaySchedule != undefined) {
-      if (this.notifications.todaySchedule.length > 0) {
+      if (this.notifications.todaySchedule.length >0) {
 
         //this is for when notification is received while app is closed
 
@@ -318,17 +330,7 @@ export class HomePage implements OnInit {
             moment(this.notifications.todaySchedule[index].time, 'HH:mm:ss').format('ss') as unknown as number
           );
 
-
-          console.log(responseTimeFormatWithDate);
-          console.log(index);
-          console.log();
-          console.log(currentTime);
-          console.log("run", moment(responseTimeFormatWithDate).isAfter(currentTime, 'minute'));
-
           if (moment(responseTimeFormatWithDate).isAfter(currentTime, 'minute')) {
-            console.log("run", moment(responseTimeFormatWithDate).isAfter(currentTime, 'minute'));
-            console.log(responseTimeFormatWithDate);
-            console.log(currentTime);
 
             this.time = moment(this.notifications.todaySchedule[index - 1].time, 'HH:mm:ss').format('hh:mm a')
             this.day = moment(this.notifications.todaySchedule[index - 1].day, 'ddd').format('dddd')
@@ -338,7 +340,7 @@ export class HomePage implements OnInit {
 
             //update storage
             this.homeSchedule.updateStorage({
-              id: this.notifications.todaySchedule[index - 1].id,
+              id: this.notifications.todaySchedule[index - 1].id.toString(),
               time: this.time,
               day: this.day,
               title: this.title,
@@ -354,8 +356,8 @@ export class HomePage implements OnInit {
               this.priority = this.notifications.todaySchedule[index].priority == 0 ? 'true' : 'false'
 
             //update storage
-              this.homeSchedule.updateStorage({
-                id: this.notifications.todaySchedule[index].id,
+             await this.homeSchedule.updateStorage({
+                id: this.notifications.todaySchedule[index].id.toString(),
                 time: this.time,
                 day: this.day,
                 title: this.title,
@@ -363,6 +365,20 @@ export class HomePage implements OnInit {
                 priority: this.priority
               })
           }
+        }
+      } else {
+        console.log('run');
+        
+        //if  number of sched is 0 and it wasn't deleted nor updated, then remove shown schedule at home
+        if (this.time != 'Waiting' || this.time != 'Updated' || this.time != 'Deleted') {
+          await this.homeSchedule.updateStorage({}) // set to storage to retain\
+          // set to local variable for immediate show up
+        this.time = 'Waiting', 
+        this.day = '',
+        this.title = 'No schedule yet', 
+        this.description = 'Wait for the next notification of your schedule or create one if you don\x27t have one yet', 
+        this.priority = 'false'
+          
         }
       }
     }
@@ -378,7 +394,11 @@ export class HomePage implements OnInit {
     }.bind(this), 1000)
   }
 
-
+ // Time Formatting
+ formatDate(time) {
+  const formattedString = moment(time, 'HH:mm:ss').format('hh:mm A');
+  return formattedString;
+}
   // refresh weather
   async doRefresh(event) {
 
@@ -407,7 +427,7 @@ export class HomePage implements OnInit {
   async getWeatherAPI(){
     console.log('get run');
       //get current position
-      await Geolocation.getCurrentPosition({enableHighAccuracy : true, timeout: 3600000, maximumAge : 21600000}).then(
+      await Geolocation.getCurrentPosition({enableHighAccuracy : true}).then(
         async (res) => { // location is enab;ed
           console.log('Current position:', res);
                           
@@ -432,9 +452,26 @@ export class HomePage implements OnInit {
             }
           )
         },
-        error => {               
-          this.presentAlert('settings', error.message, 'Please turn on your GPS', "location")
-          this.temperature = 'Allow location permission' // set defaults
+        error => {              
+          let long = ''
+          let  header = ''
+          let settings = ''
+          if (error.message == 'location disabled') {
+            long =  'Please turn on your GPS'
+            settings = 'location'
+            header ='Turn on GPS'
+          } else{ 
+            long =  'Please allow location permission of this appliction from your phone settings to continue using weather'
+            settings = 'application_details'
+            header ='Allow location permission'
+          }
+          this.presentAlert('settings', error.message, long, settings)
+          this.weather.temperature = header
+          this.weather.cloud = 'none'
+          this.weather.icon ='https://cdn-icons-png.flaticon.com/512/252/252035.png'
+          this.weather.city = 'none'
+
+          this.temperature = header // set defaults
           this.city = "none"
           this.cloud = "none"
           this.icon = "https://cdn-icons-png.flaticon.com/512/252/252035.png"
@@ -479,5 +516,25 @@ export class HomePage implements OnInit {
     await alert.present();
 
   }
+
+  // present Modal
+  async presentModal(title, description, priority, vibrate, ringtone, time, day) {
+  
+    const modal = await this.modalController.create({
+      component: ListModalComponent,
+      componentProps: { 
+        'title': title,
+        'description' : description,
+        'priority' : priority == 0? true : false,
+        'vibrate' : vibrate  == 0 ? true : false,
+        'ringtone' : ringtone,
+        'time' : time,
+        'day' : day,
+      }
+    });
+    return await modal.present();
+  }
+
+
 
 }

@@ -22,6 +22,8 @@ export class NotificationsService {
   dayToEnum;
   channelSound = ''
   todaySchedule: any[] // holder to be accessed from home
+  todayScheduleHighPrio: any[] // holder to be accessed from home
+
   async setNotificationForToday() {
     // (await LocalNotifications.listChannels()).channels.forEach(
     //   async (element) => {
@@ -52,33 +54,25 @@ export class NotificationsService {
 
 
   notification() {
+    this.todaySchedule = [] // reset 
+    this.todayScheduleHighPrio = [] // reset 
     this.schedule
       .todaySchedules(this.users.decodedToken.id, this.day)
       .subscribe(
         async (response: any) => {
-          
+            
           if (response.response != undefined) {
-            this.todaySchedule = response.response
-
-            /** DOESNT NEED YET !!!
-             *  Convert Weekday names Abbrevaition to full name
-             *  then convert it to System ENUMS
-             */
-            // this.convertDaytoEnum(response.response);
-
-            /** DOESNT NEED YET !!!
-             *  Loops respose
-             *  delete existing channels to only hold alarms set for today
-             *  then create channels for every response
-             */
 
             await this.deleteNotification() // deletets pending notif to reset
 
-
-
             response.response.forEach(async (res) => {
               if (res.toggle == 0) {
-
+                
+                this.todaySchedule.push(res) //set only the toggled on sched
+                if(res.priority == 0){
+                  this.todayScheduleHighPrio.push(res) //set only the highprio on sched
+                }
+                
                 // create date obj
                 let myDate = new Date(
                   new Date().getFullYear(),

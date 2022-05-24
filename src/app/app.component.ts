@@ -9,7 +9,7 @@ import { AuthenticationService } from './services/authentication.service';
 import { UserService } from './services/users.services';
 
 
-const IMAGE_KEY = 'image'
+export const IMAGE_KEY = 'image'
 
 
 @Component({
@@ -34,12 +34,14 @@ export class AppComponent {
   imageUrl
 
   async ngOnInit() {
-    await Storage.get({ key: IMAGE_KEY }).then(res => {
+    await Storage.get({ key: IMAGE_KEY }).then( async (res) => {
       if (res && res.value){
           this.imageUrl = res.value
           
       } else{
         this.imageUrl = '../../assets/avatar.png'
+        await Storage.set({key : IMAGE_KEY, value : this.imageUrl})
+
       }
   });
   }

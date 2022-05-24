@@ -31,21 +31,7 @@ ion-grid {
      
       --size : 64px
     }
-    // .glow-icon {
-    //   z-index: 10;
-    //   position: absolute;
-    //   display: block;
-    //   top: 50%;
-    //   left: 50%;
-    //   box-shadow:
-    //     0 0 30px 12px #05575F,
-    //     /* inner white */
-    //     0 0 44px 18px #9CC1C5,
-    //     /* middle magenta */
-    //     0 0 54px 28px #fff;
-    //   /* outer cyan */
-    // }
-
+  
     fa-icon {
       z-index: 20;
       font-size: 32px;
@@ -124,6 +110,25 @@ ion-grid {
         font-family: 'century-gothic-italic';
         font-size: 16px;
         text-align: left;
+    }
+  }
+
+  ion-col.high-prio{
+    margin-top: 16px;
+    ion-list{
+      border: 1px solid rgba(255, 255, 255, 0.29);
+
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    }
+
+    ion-list-header{
+      ion-label{
+        font-size: 16px;
+        color : #fff;
+      }
     }
   }
 }

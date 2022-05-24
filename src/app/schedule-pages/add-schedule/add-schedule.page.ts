@@ -54,16 +54,13 @@ export class AddSchedulePage implements OnInit {
     });
 
 
-    Storage.get({ key: 'sound' }).then(res => {
-      if (res.value == '' ||  res.value == undefined ||res.value == null || res.value != 'true'){
-          this.preloadSounds()
-      }     
-  });
-
   }
 
   async ngOnInit() {
-    this.form = new AddScheduleForm(this.formBuilder).createForm();
+
+    this.form = new AddScheduleForm(this.formBuilder).createForm();   
+    this.preloadSounds() 
+
   }
 
   ionViewWillEnter() {
@@ -318,18 +315,18 @@ export class AddSchedulePage implements OnInit {
           this.ringtone
         )
         .subscribe(
-          async (response: any) => {
-            await loading.dismiss();
+          async (response: any) => {    
+            
             await this.notifications.setNotificationForToday() // recall notifications 
-
-            if ((await Storage.get({ key: ID_KEY })).value == response.response.id) {
+            
+            if ( (await Storage.get({ key: ID_KEY })).value == response.response.id)  {
               // if time and day has not been changed, then do not change displayed schedule in home
               if (
                 moment((await Storage.get({ key: TIME_KEY })).value, 'hh:mm a').format('HH:mm:ss') == response.response.time &&
                 moment((await Storage.get({ key: DAY_KEY })).value, 'dddd').format('ddd') == response.response.day
               ) {
                 this.homeSchedule.updateStorage({
-                  id: response.response.id as string,
+                  id: response.response.id.toString(),
                   time: moment(response.response.time, 'HH:mm:ss').format('hh:mm a'),
                   day: moment(response.response.day, 'ddd').format('dddd'),
                   title: response.response.title,
@@ -344,7 +341,7 @@ export class AddSchedulePage implements OnInit {
                 })
               }
             }
-
+            await loading.dismiss();
             this.presentToast(response.message);
           },
           async (error) => {

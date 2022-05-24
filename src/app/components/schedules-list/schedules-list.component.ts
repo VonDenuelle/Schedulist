@@ -88,8 +88,8 @@ export class SchedulesListComponent implements OnInit {
 
           } else {
             await this.schedules.deleteFromList(index)  
-             this.notifications.setNotificationForToday() // recall notifications 
-
+             this.notifications.setNotificationForToday() // recall notifications
+             
             //if shown schedule in home is the deleted schedule, then remove
             if ( (await Storage.get({key : ID_KEY})).value == id ) {
           
